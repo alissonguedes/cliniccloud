@@ -243,7 +243,9 @@ var Buttons = {
 
 					onOpenEnd: () => {
 
-						Request.constructor(target);
+						alert('Carregado');
+
+						Request.constructor();
 						Materialize.constructor();
 						Scroller.constructor();
 						controleTime();
