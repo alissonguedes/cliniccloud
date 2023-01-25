@@ -234,9 +234,9 @@ var Buttons = {
 							method: 'get',
 							success: (response) => {
 
-								alert('teste')
+								// alert('teste')
 
-								target.html($(response).find(div).html());
+								// target.html($(response).find(div).html());
 
 							}
 						});
