@@ -173,7 +173,7 @@ namespace App\Models{
 						// echo 'Route::prefix("' . $route->route . '")->group(function ($router) use ($route) {<br>';
 
 						Route::prefix($route->route)->group(function ($router) use ($route) {
-							$this->getRoutes($route->id_modulo, $route->id);
+							$this->getRoutes((int) $route->id_modulo, $route->id);
 						});
 						// echo '});<br>';
 
