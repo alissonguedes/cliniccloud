@@ -13,7 +13,7 @@
 	@endphp
 
 	@foreach($paginate as $ind => $row)
-		<tr class="{{ $row->status === '0' ? 'blocked' : null }}" style="position: relative;" id="{{ $row->id }}" data-url="{{ go('clinica.departamentos.edit', $row->id) }}" data-target="modal_departamento" data-disabled="false">
+		<tr class="{{ $row->status === '0' ? 'blocked' : null }}" style="position: relative;" id="{{ $row->id }}" data-url="{{ go('clinica.departamentos.edit', $row->id) }}" data-trigger="modal" data-target="modal_departamento" data-disabled="false">
 			<td width="1%" data-disabled="true">
 				<label>
 					<input type="checkbox" name="id[]" class="filled-in" value="{{ $row->id }}" data-status="{{ $row->status }}">

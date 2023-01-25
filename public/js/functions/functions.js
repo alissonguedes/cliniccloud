@@ -234,6 +234,8 @@ var Buttons = {
 							method: 'get',
 							success: (response) => {
 
+								alert('teste')
+
 								target.html($(response).find(div).html());
 
 							}
@@ -242,8 +244,6 @@ var Buttons = {
 					},
 
 					onOpenEnd: () => {
-
-						alert('Carregado');
 
 						Request.constructor();
 						Materialize.constructor();
