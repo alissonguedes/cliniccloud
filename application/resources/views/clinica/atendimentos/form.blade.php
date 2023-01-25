@@ -1,10 +1,18 @@
+@extends('clinica.body')
+
+@section('title', 'Atendimentos')
+
+@section('prev-url', go('clinica.atendimentos.index'))
+
+@section('main')
+
 <aside id="right-sidebar-nav">
 
 	<div class="row">
 
 		<div class="col s9 l3 ">
 
-			<div id="atendimento" class="slide-out-right-sidenav sidenav rightside-navigation grey lighten-3 z-depth-4" data-position="right">
+			<div id="atendimento" class="slide-out-right-sidenav sidenav rightside-navigation grey lighten-3 z-depth-2 open" style="transform: translateX(-0%);" data-position="right">
 
 				<div class="animated slow fadeIn">
 
@@ -29,7 +37,7 @@
 
 							<div class="slide-out-right-title flex flex-column">
 
-								<div class="col s12 pb-0 pt-10 center-align">
+								<div class="col s12 center-align">
 
 									<div class="foto circle flex flex-column flex-center center-align mb-4">
 
@@ -64,7 +72,7 @@
 
 							</div>
 
-							<div class="slide-out-right-body center-align flex-column flex flex-center" style="padding-top:60px !important;">
+							<div class="slide-out-right-body center-align flex-column flex flex-center" style="padding-top: 30px !important;">
 
 								<div class="row">
 									<div class="col s12">
@@ -111,3 +119,15 @@
 
 </aside>
 <!-- END RIGHT SIDEBAR NAV -->
+
+
+@endsection
+
+@section('left-sidebar')
+@include('clinica.agendamentos.form')
+@endsection
+
+@section('right-sidebar')
+@include('clinica.atendimentos.datelhes_atendimento')
+{{-- @include('clinica.atendimentos.form') --}}
+@endsection

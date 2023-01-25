@@ -226,7 +226,7 @@ var Buttons = {
 
 					onOpenStart: () => {
 
-						target.empty();
+						target.empty().addClass('z-depth-4');;
 
 						$.ajax({
 							url: url,
@@ -234,31 +234,29 @@ var Buttons = {
 							method: 'get',
 							success: (response) => {
 
-								// alert('teste')
+								target.html($(response).find(div).html());
 
-								// target.html($(response).find(div).html());
+								Request.constructor();
+								Materialize.constructor();
+								Scroller.constructor();
+								controleTime();
+								Mask.init();
 
 							}
 						});
 
 					},
 
-					onOpenEnd: () => {
-
-						Request.constructor();
-						Materialize.constructor();
-						Scroller.constructor();
-						controleTime();
-						Mask.init();
-
-					},
+					onOpenEnd: () => {},
 
 					onCloseStart: () => {
-
 						if ($('[data-trigger="cronometro"]').length) {
 							$('[data-trigger="cronometro"]').click();
 						}
+					},
 
+					onCloseEnd: () => {
+						target.removeClass('z-depth-4');
 					}
 
 				});

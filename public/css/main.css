@@ -447,7 +447,8 @@ small {
 
 .sidenav.rightside-navigation {
 	width: inherit;
-	top: 0;
+	top: 65px;
+	height: calc(100vh - 64px);
 }
 
 @media only screen and (min-width: 993px) {

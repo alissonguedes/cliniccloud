@@ -171,7 +171,6 @@ namespace App\Models{
 					} else {
 
 						// echo 'Route::prefix("' . $route->route . '")->group(function ($router) use ($route) {<br>';
-
 						Route::prefix($route->route)->group(function ($router) use ($route) {
 							$this->getRoutes((int) $route->id_modulo, $route->id);
 						});
