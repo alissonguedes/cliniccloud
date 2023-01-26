@@ -752,3 +752,56 @@ if (!function_exists('go')) {
 	}
 
 }
+
+if (!function_exists('credit_card')) {
+
+	function credit_card($ncard = '4287883765192503', $min = 16, $max = 16)
+	{
+
+		if (empty($ncard)) {
+
+			$ncard = rand(4, 6);
+
+			for ($start = $min, $end = $max; $start < $min, $end > 0; $start++, $end--) {
+
+				if (strlen($ncard) < $max) {
+					$ncard .= rand(0, 9);
+				}
+
+			}
+
+		}
+
+		$last_val = (int) substr($ncard, -1);
+
+		$doubles = [];
+
+		for ($i = 0, $t = strlen($ncard); $i < $t; $i++) {
+
+			$doubles[] = substr($ncard, $i, 1) * ($i % 2 == 0 ? 2 : 1);
+
+		}
+
+		$sum = 0;
+
+		foreach ($doubles as $double) {
+			for ($i = 0, $t = strlen($double); $i < $t; ++$i) {
+				$sum += (int) substr($double, $i, 1);
+			}
+		}
+
+		if ($last_val === (10 - $sum % 10) % 10) {
+
+			return true;
+
+		} else {
+
+			// credit_card();
+
+		}
+
+		return $ncard;
+
+	}
+
+}

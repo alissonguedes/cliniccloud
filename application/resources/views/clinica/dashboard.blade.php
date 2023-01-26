@@ -90,7 +90,7 @@
 		</div>
 		<!--card stats end-->
 
-		<!--yearly & weekly revenue chart start-->
+		{{-- <!--yearly & weekly revenue chart start-->
 		<div id="sales-chart">
 			<div class="row">
 				<div class="col s12 m8 l8">
@@ -322,7 +322,7 @@
 			<!-- ecommerce offers end-->
 			<!-- //////////////////////////////////////////////////////////////////////////// -->
 		</div>
-		<!--end container-->
+		<!--end container--> --}}
 	</div>
 
 	<!-- START RIGHT SIDEBAR NAV -->

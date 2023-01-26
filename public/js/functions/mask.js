@@ -11,7 +11,8 @@ var Mask = {
 		cpf: 11,
 		date: 10,
 		email: null,
-		time: 8
+		time: 8,
+		credit_card: 19
 	},
 
 	format: {
@@ -20,7 +21,8 @@ var Mask = {
 		cpf: /(\d{3})\.(\d{3})\.(\d{3})\-(\d{2})/,
 		date: /(([0-2][0-9])|([3][0-1]))\/(([0][0-9])|[1][0-2])\/(\d{4})/,
 		email: /^$/,
-		time: /(([0-1][0-9])|([2][0-3]))\:([0-5][0-9])(\:[0-5][0-9])?/
+		time: /(([0-1][0-9])|([2][0-3]))\:([0-5][0-9])(\:[0-5][0-9])?/,
+		credit_card: /[(\d{4})(\s)]+/
 	},
 
 	exec: (input, mask) => {
@@ -155,6 +157,20 @@ var Mask = {
 
 	},
 
+	credit_card: (v, len) => {
+
+		var len = len || 4;
+		console.log(v);
+		v = v.replace(/\D/g, '');
+
+		for (var i = 1; i <= 4; i++) {
+			v = v.replace(/(\d{4})(\d)/, '$1 $2');
+		}
+
+		return v;
+
+	},
+
 	init: () => {
 
 		$('[data-mask]').each(function() {
@@ -173,7 +189,7 @@ var Mask = {
 					.addClass('active');
 			}
 
-			Mask.exec(this, mask);
+			Mask.exec(this, mask, maxlength);
 
 			if ($(this).attr('type') == 'hidden') {
 

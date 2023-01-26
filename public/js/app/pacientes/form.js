@@ -1,6 +1,11 @@
 'use strict';
 
 /**
+ * Ativa/Inativa os Inputs do convênio médicus24h ou convencional
+ */
+// $('input[name="conveniado"]')
+
+/**
  * Ativa/Inativa checkbox e caixa de texto
  * Form: Pacientes
  * Aba: Outras Informações.
@@ -20,4 +25,4 @@ $('input[name="obito"]').bind('change', function() {
 		datahora_obito.val('').attr('disabled', true).parent().find('label').css('color', '#9e9e9e');
 	}
 
-})
+});
