@@ -271,7 +271,7 @@
 
 									<!-- BEGIN #informacoes_convenio -->
 									<div id="informacoes_convenio">
-										{{-- <div class="row">
+										 <div class="row">
 											<div class="col s12 m6 l6 mt-3 mb-3">
 												<h6>Plano Médicus24h</h6>
 											</div>
@@ -309,11 +309,11 @@
 														<option value="" disabled selected>Informe o convênio</option>
 														{{-- @foreach($convenios as $convenio)
 															<option value="{{ $convenio->id }}" {{ $row && $convenio->id==$row->id_convenio ? 'selected=selected' : null }}>{{ $convenio->descricao }}</option>
-														@endforeach--}
+														@endforeach--}}
 													</select>
 												</div>
 											</div>
-										</div> --}}
+										</div>
 										<div class="row">
 											<div class="col s12 mt-3 mb-3">
 												<h6>Convênio</h6>
