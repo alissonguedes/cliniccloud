@@ -22,9 +22,6 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('container'); ?>
-
-<?php echo e(credit_card()); ?>
-
 <?php echo $__env->make('clinica.pacientes.results', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 

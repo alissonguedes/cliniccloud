@@ -277,7 +277,7 @@ if (!function_exists('convert_to_date')) {
 			// }
 		} else {
 
-			$date = \Carbon\Carbon::createFromFormat($format, $date)->format($to_format);
+			$date = \Carbon\Carbon::createFromFormat($to_format, $date)->format($format);
 
 			return $date;
 
