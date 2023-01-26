@@ -23,8 +23,6 @@
 @endsection
 
 @section('container')
-
-{{ credit_card() }}
 @include('clinica.pacientes.results')
 @endsection
 
