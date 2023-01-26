@@ -4,23 +4,81 @@
 
 <?php $__env->startSection('main'); ?>
 
-<aside id="right-sidebar-nav">
+<div class="container">
 
-	<div class="row">
+	<div class="row scroller" style="height: calc(100vh - 64px);">
 
-		<div class="col s9 l3 ">
+		<div class="col s12 l9">
 
-			<div id="atendimento" class="slide-out-right-sidenav sidenav rightside-navigation grey lighten-3 z-depth-2 open" style="transform: translateX(-0%);" data-position="right">
+			<div class="card">
 
-				<div class="animated slow fadeIn">
+				<div class="row">
+					<div class="col s12">
+						<div class="container pt-2 pb-2 pl-3 pr-3">
+							<?php echo e(convert_to_date('d/m/Y H:i:s', 'l, d {de} F {de} Y', false)); ?>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="divider"> </div>
+
+				<div class="card-content">
 
 					<div class="row">
 						<div class="col s12">
-							<a href="#" class="sidenav-close right mr-5 black-text">
-								<span class="material-symbols-outlined">arrow_forward</span>
-							</a>
+							<div class="input-field">
+								<label for="queixa_principal">Queixa principal</label>
+								<input type="text" name="queixa_principal">
+							</div>
 						</div>
 					</div>
+
+					<div class="row mt-1 mb-1"></div>
+
+					<label style="font-size: inherit;">Anamnese:</label>
+					<br>
+					<div id="queixa_principal" class="editor materialize-textarea" data-placeholder="Anamnese"><?php echo e($row->notas_clinicas ?? null); ?></div>
+
+					<div class="row mt-1 mb-1"></div>
+
+					<label style="font-size: inherit;">Sintomas:</label>
+					<br>
+					<div id="queixa_principal" class="editor materialize-textarea" data-placeholder="Sintomas"><?php echo e($row->notas_clinicas ?? null); ?></div>
+
+					<label style="font-size: inherit;">Histórico e antecedentes:</label>
+					<br>
+					<div id="queixa_principal" class="editor materialize-textarea" data-placeholder="Histórico e antecedentes"><?php echo e($row->notas_clinicas ?? null); ?></div>
+
+					<div class="row mt-1 mb-1"></div>
+
+					<label style="font-size: inherit;">Exame físico:</label>
+					<br>
+					<div id="queixa_principal" class="editor materialize-textarea" data-placeholder="Diagnóstico"><?php echo e($row->notas_clinicas ?? null); ?></div>
+
+					<div class="row mt-1 mb-1"></div>
+
+					<label style="font-size: inherit;">Diagnóstico:</label>
+					<br>
+					<div id="queixa_principal" class="editor materialize-textarea" data-placeholder="Diagnóstico"><?php echo e($row->notas_clinicas ?? null); ?></div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="col s12 l3">
+
+		<aside id="right-sidebar-nav">
+
+			<div id="atendimento" class="slide-out-right-sidenav sidenav rightside-navigation grey lighten-3 z-depth-2 pt-2 pl-1 pr-1 open" style="transform: translateX(-0%);" data-position="right">
+
+				<div class="animated slow fadeIn">
+
+					
 
 					<?php if(isset($row)): ?>
 
@@ -112,9 +170,9 @@
 
 			</div>
 
-		</div>
-
 	</div>
+
+</div>
 
 </aside>
 <!-- END RIGHT SIDEBAR NAV -->
