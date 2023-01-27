@@ -19,4 +19,4 @@ yarn-error.log
 *.pdf
 **/framework
 public/.htaccess
-docs
+#docs
