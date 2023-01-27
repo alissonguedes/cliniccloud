@@ -18,4 +18,4 @@ yarn-error.log
 /.vscode
 *.pdf
 **/framework
-**/public/.htaccess
+/public/.htaccess
