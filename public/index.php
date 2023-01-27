@@ -7,7 +7,7 @@ $dir_path = explode('index.php', $_SERVER['SCRIPT_FILENAME']);
 
 array_pop($dir_path);
 
-$__DIR = dirname($dir_path[0]);
+$__DIR = getcwd() . '/..'; //dirname($dir_path[0]);
 
 define('BASEDIR', $__DIR . '/application/');
 define('LARAVEL_START', microtime(true));
