@@ -15,8 +15,8 @@
 <div class="row">
 	<div class="col s12">
 		<div class="card">
-			<div class="card-content scroller">
-				<div class="card-body fixed-height">
+			<div class="card-content">
+				<div class="card-body">
 					<div class="table grid bordered">
 						<div class="grid-head">
 							<div class="grid grid-row">
@@ -27,19 +27,19 @@
 									</label>
 								</div>
 								<div class="grid-col" data-order="asc">
-									<span>Name</span>
+									<span class="direction">Name</span>
 								</div>
 								<div class="grid-col">
-									<span>Grupo</span>
+									<span class="direction">Grupo</span>
 								</div>
 								<div class="grid-col">
-									<span>Email</span>
+									<span class="direction">Email</span>
 								</div>
 								<div class="grid-col">
-									<span>Ultimo Login</span>
+									<span class="direction">Ultimo Login</span>
 								</div>
 								<div class="grid-col center-align">
-									<span>Status</span>
+									<span class="direction">Status</span>
 								</div>
 								<div class="grid-col center-align" data-disabled="true" data-orderable="false">
 									<span>Ação</span>
@@ -47,7 +47,9 @@
 							</div>
 						</div>
 						<div class="grid grid-body">
-							@include('clinica.usuarios.list')
+							<div class="scroller" style="height: calc(100vh - 290px)">
+								@include('clinica.usuarios.list')
+							</div>
 						</div>
 					</div>
 					<style>
@@ -57,7 +59,7 @@
 
 						.grid .grid-row {
 							display: grid;
-							grid-template-columns: 50fr 350fr 200fr 200fr 200fr 100fr 100fr;
+							grid-template-columns: 50fr 350fr 200fr 200fr 200fr 150fr 100fr;
 						}
 
 						.grid .grid-head .grid-col:not([data-orderable=false]) {
@@ -93,6 +95,22 @@
 							border-bottom-color: var(--grey-accent-2);
 						}
 
+						.grid .grid-body .grid-row {
+							transition: 500ms;
+						}
+
+						.grid .grid-body .grid-row:hover {
+							background-color: rgba(0, 0, 0, 0.04);
+						}
+
+						.grid .grid-body .grid-row.selected {
+							background-color: rgba(0, 0, 0, 0.08);
+						}
+
+						.grid .grid-body .grid-row .grid-col {
+							cursor: pointer;
+						}
+
 						.grid.bordered .grid-body .grid-row:last-child {
 							border-bottom: none;
 						}
@@ -126,6 +144,9 @@
 							border-style: solid;
 							border-color: var(--blue-accent-1);
 							overflow: hidden;
+							transform: translateY(0px);
+							transition: 200ms;
+							opacity: 0.35;
 						}
 
 						.grid .grid-head .grid-col:not([data-orderable="false"]):before {
@@ -144,19 +165,14 @@
 
 						.grid .grid-head .grid-col[data-order="asc"]:not([data-orderable="false"]):before {
 							border-bottom-color: var(--blue-darken-3);
+							transform: translateY(0px);
+							opacity: 1;
 						}
-
-						/*							.grid .grid-head .grid-col[data-order="asc"]:not([data-orderable="false"]):after {
-								border: none;
-							}
-
-							.grid .grid-head .grid-col[data-order="desc"]:not([data-orderable="false"]):before {
-								border: none;
-							}
-							*/
 
 						.grid .grid-head .grid-col[data-order="desc"]:not([data-orderable="false"]):after {
 							border-top-color: var(--blue-darken-3);
+							transform: translateY(0px);
+							opacity: 1;
 						}
 					</style>
 				</div>

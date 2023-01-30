@@ -16,7 +16,7 @@ var Scroller = {
 
 			scroll = new PerfectScrollbar(this, {
 				theme: "dark",
-				wheelSpeed: 3,
+				wheelSpeed: 1,
 				wheelPropagation: wheelPropagation,
 				suppressScrollX: suppressScrollX,
 				suppressScrollY: suppressScrollY

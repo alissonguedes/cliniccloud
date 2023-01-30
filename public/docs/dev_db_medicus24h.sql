@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 30-Jan-2023 às 03:31
+-- Tempo de geração: 30-Jan-2023 às 03:01
 -- Versão do servidor: 10.3.35-MariaDB
 -- versão do PHP: 8.2.1
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `prod_db_medicus24h`
+-- Banco de dados: `dev_db_medicus24h`
 --
 
 -- --------------------------------------------------------
@@ -365,7 +365,7 @@ INSERT INTO `tb_acl_modulo_grupo` (`id_grupo`, `id_modulo`) VALUES
 (1, 6),
 (2, 1),
 (2, 2),
-(2, 6);
+(3, 6);
 
 -- --------------------------------------------------------
 
@@ -518,7 +518,7 @@ INSERT INTO `tb_acl_modulo_routes` (`id`, `name`, `id_controller`, `id_parent`, 
 (128, 'clinica.usuarios.delete', 30, 131, 'delete', '/', 'delete', NULL, 1111, 'inherit', '1'),
 (129, 'clinica.usuarios.edit', 30, 131, 'get', '/id/{id}', 'form', NULL, 1111, 'inherit', '1'),
 (130, 'clinica.usuarios.get', 30, 131, 'get', '/{id}/dados', 'get', NULL, 1111, 'inherit', '1'),
-(131, 'clinica.usuarios.index', 30, NULL, 'any', '/usuarios', 'index', NULL, 1111, 'inherit', '0'),
+(131, 'clinica.usuarios.index', 30, NULL, 'any', '/usuarios', 'index', NULL, 1111, 'inherit', '1'),
 (132, 'clinica.usuarios.index', 30, 131, 'any', '/', 'index', NULL, 1111, 'inherit', '1'),
 (133, 'clinica.usuarios.patch', 30, 131, 'patch', '/{id}', 'patch', NULL, 1111, 'inherit', '1'),
 (134, 'clinica.usuarios.post', 30, 131, 'post', '/', 'create', NULL, 1111, 'inherit', '1'),
@@ -527,7 +527,7 @@ INSERT INTO `tb_acl_modulo_routes` (`id`, `name`, `id_controller`, `id_parent`, 
 (137, 'clinica.grupos.usuarios.post', 29, 140, 'post', '/', 'create', NULL, 1111, 'inherit', '1'),
 (138, 'clinica.grupos.usuarios.patch', 29, 140, 'patch', '/{id}', 'patch', NULL, 1111, 'inherit', '1'),
 (139, 'clinica.grupos.usuarios.index', 29, 140, 'any', '/', 'index', NULL, 1111, 'inherit', '1'),
-(140, 'clinica.grupos.usuarios.index', 29, NULL, 'any', '/grupos', 'index', NULL, 1111, 'inherit', '0'),
+(140, 'clinica.grupos.usuarios.index', 29, NULL, 'any', '/grupos', 'index', NULL, 1111, 'inherit', '1'),
 (141, 'clinica.grupos.usuarios.get', 29, 140, 'get', '/{id}/dados', 'get', NULL, 1111, 'inherit', '1'),
 (142, 'clinica.grupos.usuarios.edit', 29, 140, 'get', '/id/{id}', 'form', NULL, 1111, 'inherit', '1'),
 (143, 'clinica.grupos.usuarios.delete', 29, 140, 'delete', '/', 'delete', NULL, 1111, 'inherit', '1'),
@@ -604,7 +604,6 @@ CREATE TABLE `tb_acl_usuario` (
   `id_funcionario` int(11) UNSIGNED DEFAULT NULL,
   `id_gestor` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `nome` varchar(255) NOT NULL,
-  `nome_completo` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL,
   `login` varchar(255) NOT NULL,
   `senha` varchar(255) NOT NULL,
@@ -620,9 +619,9 @@ CREATE TABLE `tb_acl_usuario` (
 -- Extraindo dados da tabela `tb_acl_usuario`
 --
 
-INSERT INTO `tb_acl_usuario` (`id`, `id_grupo`, `id_funcionario`, `id_gestor`, `nome`, `nome_completo`, `email`, `login`, `senha`, `salt`, `permissao`, `ultimo_login`, `created_at`, `updated_at`, `status`) VALUES
-(1, 1, NULL, 0, 'Alisson Guedes', 'Alisson Guedes Pereira', 'alissonguedes87@gmail.com', 'alisson', '3d536bf0be85f3dec621dce1b12db8c1977bf276bd7f3778e7eb7cb459dc48b8a5c30a7a57e6d', NULL, 1111, '2022-06-23 14:42:56', '2022-06-23 20:43:09', NULL, '1'),
-(2, 2, NULL, 0, 'Deborah Chianca', 'Deborah Tayane Ferreira Chianca', 'deborah.medicus24h@gmail.com', 'deborah.medicus24h@gmail.com', '3ffbf99945de7a986ed29db1701b54a3a9973de76912a954ae45f9014059cfae97ea90ddc437d', NULL, 1111, NULL, '2023-01-27 11:02:18', NULL, '1');
+INSERT INTO `tb_acl_usuario` (`id`, `id_grupo`, `id_funcionario`, `id_gestor`, `nome`, `email`, `login`, `senha`, `salt`, `permissao`, `ultimo_login`, `created_at`, `updated_at`, `status`) VALUES
+(1, 1, NULL, 0, 'Alisson Guedes', 'alissonguedes87@gmail.com', 'alisson', '6b2a792a47f194d7574a86218ca5f082446d9b4198c658e66d2ec98c5f034905788848e5b38a7', NULL, 1111, '2022-06-23 14:42:56', '2022-06-23 20:43:09', NULL, '1'),
+(2, 4, NULL, 0, 'Deborah', 'deborah', 'deborah', '3c702e76fdd1a5c46f902ccd2287e2eabaea8f673497350ea105511d27573b3bf199433c3037d', NULL, 1111, NULL, '2023-01-30 02:46:13', NULL, '1');
 
 -- --------------------------------------------------------
 
@@ -644,8 +643,7 @@ CREATE TABLE `tb_acl_usuario_config` (
 --
 
 INSERT INTO `tb_acl_usuario_config` (`id_usuario`, `id_modulo`, `id_config`, `value`, `created_at`, `updated_at`) VALUES
-(1, 2, 3, 'expanded', '2022-08-24 15:31:48', '2023-01-30 01:31:45'),
-(2, 6, 6, 'expanded', '2023-01-27 11:03:30', NULL);
+(1, 2, 3, 'expanded', '2022-08-24 15:31:48', '2023-01-26 19:03:49');
 
 -- --------------------------------------------------------
 
@@ -687,16 +685,6 @@ CREATE TABLE `tb_acl_usuario_session` (
 --
 -- Extraindo dados da tabela `tb_acl_usuario_session`
 --
-
-INSERT INTO `tb_acl_usuario_session` (`id`, `id_usuario`, `id_modulo`, `token`, `ip`, `user_agent`, `started_at`, `expired_at`) VALUES
-(1, 1, 6, NULL, '187.19.211.103', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36', '2023-01-27 10:53:40', '2023-01-27 11:02:29'),
-(2, 2, 6, NULL, '187.19.211.103', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36', '2023-01-27 11:03:18', '2023-01-27 11:06:49'),
-(3, 2, 6, NULL, '187.19.211.103', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36', '2023-01-27 11:08:40', '2023-01-27 11:12:03'),
-(4, 1, 6, NULL, '187.19.211.103', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36', '2023-01-27 11:16:35', '2023-01-27 11:18:16'),
-(5, 1, 6, NULL, '187.19.211.103', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36', '2023-01-27 11:18:29', '2023-01-27 11:18:40'),
-(6, 1, 6, '8375a5eebe6566fdbd1411b73999241d63d44d5e391d0', '187.19.211.103', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36', '2023-01-27 22:17:02', NULL),
-(7, 1, 6, 'd6565f08c6e814c741bbdc8022e0013763d4738a7310d', '187.45.177.18', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0', '2023-01-28 00:59:54', NULL),
-(8, 1, 6, '562496df77a23174c975c6851db942bd63d72138eeb39', '187.45.177.18', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36', '2023-01-30 01:45:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -772,6 +760,10 @@ CREATE TABLE `tb_atendimento` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `status` enum('0','1','A','I','F','R','C') NOT NULL DEFAULT '1' COMMENT '''1'': ''Agendado'';\r\n''A'': ''Aguardando/Em Espera'';\r\n''I'': ''Iniciado'';\r\n''F'': ''Finalizado'';\r\n''R'': ''Remarcado'';\r\n''C'': ''Cancelado'';\r\n''0'': ''Não compareceu''.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabela de cadastro de agendamentos de eventos médicos';
+
+--
+-- Extraindo dados da tabela `tb_atendimento`
+--
 
 -- --------------------------------------------------------
 
@@ -1039,6 +1031,10 @@ CREATE TABLE `tb_departamento` (
   `status` enum('0','1') NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabela para vincular médico a várias clínica';
 
+--
+-- Extraindo dados da tabela `tb_departamento`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -1051,6 +1047,10 @@ CREATE TABLE `tb_departamento_empresa` (
   `id_empresa` int(10) UNSIGNED NOT NULL,
   `status` enum('0','1') NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `tb_departamento_empresa`
+--
 
 -- --------------------------------------------------------
 
@@ -1166,6 +1166,10 @@ CREATE TABLE `tb_empresa` (
   `status` enum('0','1') NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabela de cadastro de lojas/empresas';
 
+--
+-- Extraindo dados da tabela `tb_empresa`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -1180,6 +1184,10 @@ CREATE TABLE `tb_especialidade` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `status` enum('0','1') NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabela para cadastro de especialidades médicas';
+
+--
+-- Extraindo dados da tabela `tb_especialidade`
+--
 
 -- --------------------------------------------------------
 
@@ -1246,10 +1254,6 @@ CREATE TABLE `tb_funcao` (
 -- Extraindo dados da tabela `tb_funcao`
 --
 
-INSERT INTO `tb_funcao` (`id`, `codigo`, `funcao`, `descricao`, `created_at`, `updated_at`, `status`) VALUES
-(1, 1, 'Recepcionista', 'Recepcionista', '2022-11-22 16:25:44', NULL, '1'),
-(2, 2, 'Médico', 'Médico', '2022-11-22 16:25:44', NULL, '1');
-
 -- --------------------------------------------------------
 
 --
@@ -1260,7 +1264,6 @@ CREATE TABLE `tb_funcionario` (
   `id` int(10) UNSIGNED NOT NULL,
   `id_empresa` int(10) UNSIGNED NOT NULL,
   `id_departamento` int(10) UNSIGNED NOT NULL,
-  `id_empresa_departamento` int(10) UNSIGNED NOT NULL,
   `id_funcao` int(10) UNSIGNED NOT NULL,
   `nome` varchar(100) NOT NULL,
   `cpf` varchar(14) NOT NULL,
@@ -1269,6 +1272,10 @@ CREATE TABLE `tb_funcionario` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `status` enum('0','1') NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabela para cadastro de funcionários';
+
+--
+-- Extraindo dados da tabela `tb_funcionario`
+--
 
 -- --------------------------------------------------------
 
@@ -1351,6 +1358,10 @@ CREATE TABLE `tb_link` (
   `status` enum('0','1') NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabela de adição de links rápidos do site';
 
+--
+-- Extraindo dados da tabela `tb_link`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -1380,6 +1391,10 @@ CREATE TABLE `tb_medico` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `status` enum('0','1') NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabela para cadastro de atendimentos realizados.';
+
+--
+-- Extraindo dados da tabela `tb_medico`
+--
 
 -- --------------------------------------------------------
 
@@ -1425,11 +1440,14 @@ CREATE TABLE `tb_medico_clinica` (
   `id` int(10) UNSIGNED NOT NULL,
   `id_medico` int(10) UNSIGNED NOT NULL,
   `id_empresa` int(10) UNSIGNED NOT NULL,
-  `id_empresa_departamento` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL,
   `status` enum('0','1') NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabela para vincular médico a várias clínica';
+
+--
+-- Extraindo dados da tabela `tb_medico_clinica`
+--
 
 -- --------------------------------------------------------
 
@@ -1522,6 +1540,10 @@ CREATE TABLE `tb_paciente` (
   `status` enum('0','1') NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `tb_paciente`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -1556,6 +1578,10 @@ CREATE TABLE `tb_post` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `status` enum('0','1') NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `tb_post`
+--
 
 -- --------------------------------------------------------
 
@@ -1761,15 +1787,15 @@ ALTER TABLE `tb_acl_grupo`
 --
 ALTER TABLE `tb_acl_menu`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_tb_acl_menu_tb_pagina1_idx` (`id_modulo`);
+  ADD KEY `fk_tb_acl_menu_tb_pagina_id_modulo` (`id_modulo`);
 
 --
 -- Índices para tabela `tb_acl_menu_descricao`
 --
 ALTER TABLE `tb_acl_menu_descricao`
   ADD PRIMARY KEY (`id_idioma`,`id_menu`),
-  ADD KEY `fk_tb_produto_descricao_tb_produto1_idx` (`id_menu`),
-  ADD KEY `fk_tb_produto_descricao_tb_sys_idioma1_idx` (`id_idioma`);
+  ADD KEY `fk_tb_produto_descricao_tb_produto_id_menu` (`id_menu`),
+  ADD KEY `fk_tb_produto_descricao_tb_sys_idioma_id_idioma` (`id_idioma`);
 
 --
 -- Índices para tabela `tb_acl_menu_item`
@@ -1810,7 +1836,7 @@ ALTER TABLE `tb_acl_modulo_controller`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `unique_id_modulo_controller` (`controller`,`id_modulo`),
   ADD UNIQUE KEY `use_as` (`use_as`),
-  ADD KEY `fk_tb_acl_modulo_classe_tb_acl_modulo1_idx` (`id_modulo`);
+  ADD KEY `fk_tb_acl_modulo_controller_tb_acl_modulo_id_modulo` (`id_modulo`);
 
 --
 -- Índices para tabela `tb_acl_modulo_controller_descricao`
@@ -1825,7 +1851,7 @@ ALTER TABLE `tb_acl_modulo_controller_descricao`
 ALTER TABLE `tb_acl_modulo_grupo`
   ADD PRIMARY KEY (`id_grupo`,`id_modulo`),
   ADD KEY `fk_tb_acl_menu_grupo_id_grupo` (`id_grupo`),
-  ADD KEY `fk_tb_acl_modulo_grupo_tb_acl_modulo1_idx` (`id_modulo`);
+  ADD KEY `fk_tb_acl_modulo_grupo_tb_acl_modulo_id_modulo` (`id_modulo`);
 
 --
 -- Índices para tabela `tb_acl_modulo_routes`
@@ -1833,7 +1859,7 @@ ALTER TABLE `tb_acl_modulo_grupo`
 ALTER TABLE `tb_acl_modulo_routes`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `route_controller_action_name_UNIQUE` (`type`,`route`,`action`,`name`) USING BTREE,
-  ADD KEY `fk_tb_acl_rotas_tb_acl_modulo_classe1_idx` (`id_controller`),
+  ADD KEY `fk_tb_acl_rotas_tb_acl_modulo_controller_id_controller` (`id_controller`),
   ADD KEY `fk_tb_acl_modulo_routes_id_parent` (`id_parent`);
 
 --
@@ -1935,8 +1961,8 @@ ALTER TABLE `tb_banner`
 --
 ALTER TABLE `tb_banner_descricao`
   ADD PRIMARY KEY (`id_banner`,`id_idioma`),
-  ADD KEY `fk_tb_banner_descricao_tb_banner1_idx` (`id_banner`),
-  ADD KEY `fk_tb_banner_descricao_tb_sys_idioma1_idx` (`id_idioma`);
+  ADD KEY `fk_tb_banner_descricao_tb_banner_id_banner` (`id_banner`),
+  ADD KEY `fk_tb_banner_descricao_tb_sys_idioma_id_idioma` (`id_idioma`);
 
 --
 -- Índices para tabela `tb_banner_imagem`
@@ -1945,16 +1971,16 @@ ALTER TABLE `tb_banner_imagem`
   ADD PRIMARY KEY (`id_banner`,`id_midia`),
   ADD UNIQUE KEY `id_banner_UNIQUE` (`id_banner`),
   ADD UNIQUE KEY `id_midia_UNIQUE` (`id_midia`),
-  ADD KEY `fk_tb_banner_imagem_tb_banner1_idx` (`id_banner`),
-  ADD KEY `fk_tb_banner_imagem_tb_midia1_idx` (`id_midia`);
+  ADD KEY `fk_tb_banner_imagem_tb_banner_id_banner` (`id_banner`),
+  ADD KEY `fk_tb_banner_imagem_tb_midia_id_midia` (`id_midia`);
 
 --
 -- Índices para tabela `tb_banner_imagem_descricao`
 --
 ALTER TABLE `tb_banner_imagem_descricao`
   ADD PRIMARY KEY (`id_banner`,`id_midia`,`id_idioma`),
-  ADD KEY `fk_tb_banner_imagem_descricao_tb_sys_idioma1_idx` (`id_idioma`),
-  ADD KEY `fk_tb_banner_imagem_descricao_tb_banner_imagem1_idx` (`id_banner`,`id_midia`);
+  ADD KEY `fk_tb_banner_imagem_descricao_tb_sys_idioma_id_idioma` (`id_idioma`),
+  ADD KEY `fk_tb_banner_imagem_descricao_tb_banner_imagem_id_banner` (`id_banner`,`id_midia`);
 
 --
 -- Índices para tabela `tb_categoria`
@@ -1968,8 +1994,8 @@ ALTER TABLE `tb_categoria`
 ALTER TABLE `tb_categoria_descricao`
   ADD PRIMARY KEY (`id_categoria`,`id_idioma`),
   ADD UNIQUE KEY `titulo_UNIQUE` (`titulo`),
-  ADD KEY `fk_tb_categoria_descricao_tb_categoria1_idx` (`id_categoria`),
-  ADD KEY `fk_tb_categoria_descricao_tb_sys_idioma1_idx` (`id_idioma`);
+  ADD KEY `fk_tb_categoria_descricao_tb_categoria_id_categoria` (`id_categoria`),
+  ADD KEY `fk_tb_categoria_descricao_tb_sys_idioma_id_idioma` (`id_idioma`);
 
 --
 -- Índices para tabela `tb_cliente`
@@ -2081,10 +2107,8 @@ ALTER TABLE `tb_funcionario`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `cpf` (`cpf`),
   ADD UNIQUE KEY `rg` (`rg`),
-  ADD KEY `fk_tb_funcionario_id_empresa_departamento` (`id_empresa_departamento`),
-  ADD KEY `fk_tb_funcionario_id_funcao` (`id_funcao`),
-  ADD KEY `fk_tb_funcionario_tb_departamento1_idx` (`id_departamento`),
-  ADD KEY `fk_tb_funcionario_tb_empresa1_idx` (`id_empresa`);
+  ADD KEY `fk_tb_funcionario_id_empresa_departamento` (`id_empresa`, `id_departamento`),
+  ADD KEY `fk_tb_funcionario_id_funcao` (`id_funcao`);
 
 --
 -- Índices para tabela `tb_galeria`
@@ -2097,16 +2121,16 @@ ALTER TABLE `tb_galeria`
 --
 ALTER TABLE `tb_galeria_descricao`
   ADD PRIMARY KEY (`id_galeria`,`id_idioma`),
-  ADD KEY `fk_tb_galeria_descricao_tb_galeria1_idx` (`id_galeria`),
-  ADD KEY `fk_tb_galeria_descricao_tb_sys_idioma1_idx` (`id_idioma`);
+  ADD KEY `fk_tb_galeria_descricao_tb_galeria_id_galeria` (`id_galeria`),
+  ADD KEY `fk_tb_galeria_descricao_tb_sys_idioma_id_idioma` (`id_idioma`);
 
 --
 -- Índices para tabela `tb_galeria_imagem`
 --
 ALTER TABLE `tb_galeria_imagem`
   ADD PRIMARY KEY (`id_galeria`,`id_midia`),
-  ADD KEY `fk_tb_album_foto_id_album` (`id_galeria`),
-  ADD KEY `fk_tb_galeria_imagem_tb_midia1_idx` (`id_midia`);
+  ADD KEY `fk_tb_album_foto_id_album_id_galeria` (`id_galeria`),
+  ADD KEY `fk_tb_galeria_imagem_tb_midia_id_midia` (`id_midia`);
 
 --
 -- Índices para tabela `tb_lead`
@@ -2127,8 +2151,8 @@ ALTER TABLE `tb_link`
 --
 ALTER TABLE `tb_link_descricao`
   ADD PRIMARY KEY (`id_link`,`id_idioma`),
-  ADD KEY `fk_tb_link_descricao_tb_link1_idx` (`id_link`),
-  ADD KEY `fk_tb_link_descricao_tb_sys_idioma1_idx` (`id_idioma`);
+  ADD KEY `fk_tb_link_descricao_tb_link_id_link` (`id_link`),
+  ADD KEY `fk_tb_link_descricao_tb_sys_idioma_id_idioma` (`id_idioma`);
 
 --
 -- Índices para tabela `tb_medico`
@@ -2158,8 +2182,8 @@ ALTER TABLE `tb_medico_agenda_horario`
 ALTER TABLE `tb_medico_clinica`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id_medico_clinica` (`id_medico`,`id_empresa`) USING BTREE,
-  ADD KEY `fk_tb_medico_clinica_id_empresa_departamento` (`id_empresa_departamento`),
-  ADD KEY `fk_tb_medico_clinica_tb_empresa1_idx` (`id_empresa`);
+  ADD KEY `fk_tb_medico_clinica_tb_empresa_id_medico` (`id_medico`),
+  ADD KEY `fk_tb_medico_clinica_tb_empresa_id_empresa` (`id_empresa`);
 
 --
 -- Índices para tabela `tb_midia`
@@ -2172,8 +2196,8 @@ ALTER TABLE `tb_midia`
 --
 ALTER TABLE `tb_midia_descricao`
   ADD PRIMARY KEY (`id_midia`,`id_idioma`),
-  ADD KEY `fk_tb_midia_descricao_tb_midia1_idx` (`id_midia`),
-  ADD KEY `fk_tb_midia_descricao_tb_sys_idioma1_idx` (`id_idioma`);
+  ADD KEY `fk_tb_midia_descricao_tb_midia_id_midia` (`id_midia`),
+  ADD KEY `fk_tb_midia_descricao_tb_sys_idioma_id_idioma` (`id_idioma`);
 
 --
 -- Índices para tabela `tb_paciente`
@@ -2206,8 +2230,8 @@ ALTER TABLE `tb_post`
 --
 ALTER TABLE `tb_post_descricao`
   ADD PRIMARY KEY (`id_post`,`id_idioma`),
-  ADD KEY `fk_tb_pagina_descricao_tb_pagina1_idx` (`id_post`),
-  ADD KEY `fk_tb_pagina_descricao_tb_sys_idioma1_idx` (`id_idioma`);
+  ADD KEY `fk_tb_pagina_descricao_tb_pagina_id_post` (`id_post`),
+  ADD KEY `fk_tb_pagina_descricao_tb_sys_idioma_id_idioma` (`id_idioma`);
 
 --
 -- Índices para tabela `tb_post_link`
@@ -2222,10 +2246,9 @@ ALTER TABLE `tb_post_link`
 --
 ALTER TABLE `tb_post_midia`
   ADD PRIMARY KEY (`id_pagina`,`id_midia`),
-  ADD UNIQUE KEY `id_pagina_UNIQUE` (`id_pagina`,`id_midia`),
-  ADD UNIQUE KEY `id_midia_UNIQUE` (`id_midia`,`id_pagina`),
-  ADD KEY `fk_tb_pagina_midia_tb_pagina1_idx` (`id_pagina`),
-  ADD KEY `fk_tb_pagina_midia_tb_midia1_idx` (`id_midia`);
+  ADD UNIQUE KEY `id_pagina_midia_UNIQUE` (`id_pagina`,`id_midia`),
+  ADD KEY `fk_tb_pagina_midia_tb_pagina_id_pagina` (`id_pagina`),
+  ADD KEY `fk_tb_pagina_midia_tb_midia_id_midia` (`id_midia`);
 
 --
 -- Índices para tabela `tb_produto`
@@ -2239,26 +2262,24 @@ ALTER TABLE `tb_produto`
 --
 ALTER TABLE `tb_produto_categoria`
   ADD PRIMARY KEY (`id_produto`,`id_categoria`),
-  ADD UNIQUE KEY `id_categoria_UNIQUE` (`id_categoria`),
-  ADD UNIQUE KEY `id_produto_UNIQUE` (`id_produto`),
-  ADD KEY `fk_tb_produto_categoria_tb_produto1_idx` (`id_produto`,`id_categoria`);
+  ADD UNIQUE KEY `id_categoria_produto_UNIQUE` (`id_categoria`, `id_produto`),
+  ADD KEY `fk_tb_produto_categoria_tb_produto_id_produto_id_categoria` (`id_produto`,`id_categoria`);
 
 --
 -- Índices para tabela `tb_produto_descricao`
 --
 ALTER TABLE `tb_produto_descricao`
   ADD PRIMARY KEY (`id_idioma`,`id_produto`),
-  ADD KEY `fk_tb_produto_descricao_tb_produto1_idx` (`id_produto`),
-  ADD KEY `fk_tb_produto_descricao_tb_sys_idioma1_idx` (`id_idioma`);
+  ADD KEY `fk_tb_produto_descricao_tb_produto_id_produto` (`id_produto`),
+  ADD KEY `fk_tb_produto_descricao_tb_sys_idioma_id_idioma` (`id_idioma`);
 
 --
 -- Índices para tabela `tb_produto_imagem`
 --
 ALTER TABLE `tb_produto_imagem`
   ADD PRIMARY KEY (`id_produto`,`id_midia`),
-  ADD UNIQUE KEY `id_produto_UNIQUE` (`id_produto`),
-  ADD UNIQUE KEY `id_midia_UNIQUE` (`id_midia`),
-  ADD KEY `fk_tb_produto_imagem_tb_produto1_idx` (`id_produto`,`id_midia`);
+  ADD UNIQUE KEY `id_produto_id_midia_UNIQUE` (`id_produto`, `id_midia`),
+  ADD KEY `fk_tb_produto_imagem_tb_produto_id_produto_id_midia` (`id_produto`,`id_midia`);
 
 --
 -- Índices para tabela `tb_severidade_nota`
@@ -2363,7 +2384,7 @@ ALTER TABLE `tb_acl_usuario_imagem`
 -- AUTO_INCREMENT de tabela `tb_acl_usuario_session`
 --
 ALTER TABLE `tb_acl_usuario_session`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
 
 --
 -- AUTO_INCREMENT de tabela `tb_acomodacao`
@@ -2477,7 +2498,7 @@ ALTER TABLE `tb_etnia`
 -- AUTO_INCREMENT de tabela `tb_funcao`
 --
 ALTER TABLE `tb_funcao`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `tb_funcionario`
@@ -2617,7 +2638,7 @@ ALTER TABLE `tb_acl_modulo`
 -- Limitadores para a tabela `tb_acl_modulo_controller`
 --
 ALTER TABLE `tb_acl_modulo_controller`
-  ADD CONSTRAINT `fk_tb_acl_modulo_classe_tb_acl_modulo1` FOREIGN KEY (`id_modulo`) REFERENCES `tb_acl_modulo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_acl_modulo_controller_id_modulo` FOREIGN KEY (`id_modulo`) REFERENCES `tb_acl_modulo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_acl_modulo_controller_descricao`
@@ -2631,14 +2652,14 @@ ALTER TABLE `tb_acl_modulo_controller_descricao`
 --
 ALTER TABLE `tb_acl_modulo_grupo`
   ADD CONSTRAINT `fk_tb_acl_menu_grupo_id_grupo` FOREIGN KEY (`id_grupo`) REFERENCES `tb_acl_grupo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_acl_modulo_grupo_tb_acl_modulo1` FOREIGN KEY (`id_modulo`) REFERENCES `tb_acl_modulo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_acl_modulo_grupo_tb_acl_modulo_id_modulo` FOREIGN KEY (`id_modulo`) REFERENCES `tb_acl_modulo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_acl_modulo_routes`
 --
 ALTER TABLE `tb_acl_modulo_routes`
   ADD CONSTRAINT `fk_tb_acl_modulo_routes_id_parent` FOREIGN KEY (`id_parent`) REFERENCES `tb_acl_modulo_routes` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `fk_tb_acl_rotas_tb_acl_modulo_classe1` FOREIGN KEY (`id_controller`) REFERENCES `tb_acl_modulo_controller` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_acl_rotas_tb_acl_modulo_controller_id_controller` FOREIGN KEY (`id_controller`) REFERENCES `tb_acl_modulo_controller` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_acl_pacote_modulo`
@@ -2703,29 +2724,29 @@ ALTER TABLE `tb_atendimento_notas`
 -- Limitadores para a tabela `tb_banner_descricao`
 --
 ALTER TABLE `tb_banner_descricao`
-  ADD CONSTRAINT `fk_tb_banner_descricao_tb_banner1` FOREIGN KEY (`id_banner`) REFERENCES `tb_banner` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_banner_descricao_tb_sys_idioma1` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_banner_descricao_id_banner` FOREIGN KEY (`id_banner`) REFERENCES `tb_banner` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_banner_descricao_id_idoma` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_banner_imagem`
 --
 ALTER TABLE `tb_banner_imagem`
-  ADD CONSTRAINT `fk_tb_banner_imagem_tb_banner1` FOREIGN KEY (`id_banner`) REFERENCES `tb_banner` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_banner_imagem_tb_midia1` FOREIGN KEY (`id_midia`) REFERENCES `tb_midia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_banner_imagem_id_banner` FOREIGN KEY (`id_banner`) REFERENCES `tb_banner` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_banner_imagem_id_midia` FOREIGN KEY (`id_midia`) REFERENCES `tb_midia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_banner_imagem_descricao`
 --
 ALTER TABLE `tb_banner_imagem_descricao`
-  ADD CONSTRAINT `fk_tb_banner_imagem_descricao_tb_banner_imagem1` FOREIGN KEY (`id_banner`,`id_midia`) REFERENCES `tb_banner_imagem` (`id_banner`, `id_midia`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_banner_imagem_descricao_tb_sys_idioma1` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_banner_imagem_descricao_imagem` FOREIGN KEY (`id_banner`,`id_midia`) REFERENCES `tb_banner_imagem` (`id_banner`, `id_midia`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_banner_imagem_descricao_idioma` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_categoria_descricao`
 --
 ALTER TABLE `tb_categoria_descricao`
-  ADD CONSTRAINT `fk_tb_categoria_descricao_tb_categoria1` FOREIGN KEY (`id_categoria`) REFERENCES `tb_categoria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_categoria_descricao_tb_sys_idioma1` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_categoria_descricao_id_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `tb_categoria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_categoria_descricao_id_idioma` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_cliente_email`
@@ -2762,24 +2783,23 @@ ALTER TABLE `tb_distribuidor_telefone`
 -- Limitadores para a tabela `tb_funcionario`
 --
 ALTER TABLE `tb_funcionario`
-  ADD CONSTRAINT `fk_tb_funcionario_id_empresa_departamento` FOREIGN KEY (`id_empresa_departamento`) REFERENCES `tb_departamento_empresa` (`id`),
-  ADD CONSTRAINT `fk_tb_funcionario_id_funcao` FOREIGN KEY (`id_funcao`) REFERENCES `tb_funcao` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_funcionario_tb_departamento1` FOREIGN KEY (`id_departamento`) REFERENCES `tb_departamento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_funcionario_tb_empresa1` FOREIGN KEY (`id_empresa`) REFERENCES `tb_empresa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_funcionario_id_empresa` FOREIGN KEY (`id_empresa`) REFERENCES `tb_departamento_empresa` (`id_empresa`),
+  ADD CONSTRAINT `fk_tb_funcionario_id_departamento` FOREIGN KEY (`id_departamento`) REFERENCES `tb_departamento_empresa` (`id_departamento`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_funcionario_id_funcao` FOREIGN KEY (`id_funcao`) REFERENCES `tb_funcao` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_galeria_descricao`
 --
 ALTER TABLE `tb_galeria_descricao`
-  ADD CONSTRAINT `fk_tb_galeria_descricao_tb_galeria1` FOREIGN KEY (`id_galeria`) REFERENCES `tb_galeria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_galeria_descricao_tb_sys_idioma1` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_galeria_descricao_id_galeria` FOREIGN KEY (`id_galeria`) REFERENCES `tb_galeria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_galeria_descricao_id_idioma` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_galeria_imagem`
 --
 ALTER TABLE `tb_galeria_imagem`
-  ADD CONSTRAINT `fk_tb_album_foto_id_album` FOREIGN KEY (`id_galeria`) REFERENCES `tb_galeria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_galeria_imagem_tb_midia1` FOREIGN KEY (`id_midia`) REFERENCES `tb_midia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_album_foto_id_galeria` FOREIGN KEY (`id_galeria`) REFERENCES `tb_galeria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_galeria_imagem_id_midia1` FOREIGN KEY (`id_midia`) REFERENCES `tb_midia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_lead`
@@ -2792,8 +2812,8 @@ ALTER TABLE `tb_lead`
 -- Limitadores para a tabela `tb_link_descricao`
 --
 ALTER TABLE `tb_link_descricao`
-  ADD CONSTRAINT `fk_tb_link_descricao_tb_link1` FOREIGN KEY (`id_link`) REFERENCES `tb_link` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_link_descricao_tb_sys_idioma1` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_link_descricao_id_link` FOREIGN KEY (`id_link`) REFERENCES `tb_link` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_link_descricao_id_idioma` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_medico`
@@ -2818,15 +2838,15 @@ ALTER TABLE `tb_medico_agenda_horario`
 -- Limitadores para a tabela `tb_medico_clinica`
 --
 ALTER TABLE `tb_medico_clinica`
-  ADD CONSTRAINT `fk_tb_medico_clinica_id_empresa1` FOREIGN KEY (`id_empresa`) REFERENCES `tb_empresa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_medico_clinica_id_empresa` FOREIGN KEY (`id_empresa`) REFERENCES `tb_empresa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_tb_medico_clinica_id_medico` FOREIGN KEY (`id_medico`) REFERENCES `tb_medico` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_midia_descricao`
 --
 ALTER TABLE `tb_midia_descricao`
-  ADD CONSTRAINT `fk_tb_midia_descricao_tb_midia1` FOREIGN KEY (`id_midia`) REFERENCES `tb_midia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_midia_descricao_tb_sys_idioma1` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_midia_descricao_id_midia` FOREIGN KEY (`id_midia`) REFERENCES `tb_midia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_midia_descricao_id_idioma` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_paciente`
@@ -2848,14 +2868,14 @@ ALTER TABLE `tb_paciente_nota`
 -- Limitadores para a tabela `tb_post`
 --
 ALTER TABLE `tb_post`
-  ADD CONSTRAINT `fk_tb_post_tb_acl_modulo_classe1` FOREIGN KEY (`id_controller`) REFERENCES `tb_acl_modulo_controller` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_post_id_controller` FOREIGN KEY (`id_controller`) REFERENCES `tb_acl_modulo_controller` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_post_descricao`
 --
 ALTER TABLE `tb_post_descricao`
-  ADD CONSTRAINT `fk_tb_pagina_descricao_tb_post` FOREIGN KEY (`id_post`) REFERENCES `tb_post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_pagina_descricao_tb_sys_idioma1` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_pagina_descricao_id_post` FOREIGN KEY (`id_post`) REFERENCES `tb_post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_pagina_descricao_id_idioma` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_post_link`
@@ -2868,8 +2888,8 @@ ALTER TABLE `tb_post_link`
 -- Limitadores para a tabela `tb_post_midia`
 --
 ALTER TABLE `tb_post_midia`
-  ADD CONSTRAINT `fk_tb_pagina_midia_tb_midia1` FOREIGN KEY (`id_midia`) REFERENCES `tb_midia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_pagina_midia_tb_pagina1` FOREIGN KEY (`id_pagina`) REFERENCES `tb_post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_pagina_midia_id_midia` FOREIGN KEY (`id_midia`) REFERENCES `tb_midia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_pagina_midia_id_pagina` FOREIGN KEY (`id_pagina`) REFERENCES `tb_post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_produto`
@@ -2881,22 +2901,22 @@ ALTER TABLE `tb_produto`
 -- Limitadores para a tabela `tb_produto_categoria`
 --
 ALTER TABLE `tb_produto_categoria`
-  ADD CONSTRAINT `fk_tb_produto_categoria_tb_categoria1` FOREIGN KEY (`id_categoria`) REFERENCES `tb_categoria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_produto_categoria_tb_produto1` FOREIGN KEY (`id_produto`) REFERENCES `tb_produto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_produto_categoria_id_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `tb_categoria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_produto_categoria_id_produto` FOREIGN KEY (`id_produto`) REFERENCES `tb_produto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_produto_descricao`
 --
 ALTER TABLE `tb_produto_descricao`
-  ADD CONSTRAINT `fk_tb_produto_descricao_tb_produto1` FOREIGN KEY (`id_produto`) REFERENCES `tb_produto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_produto_descricao_tb_sys_idioma1` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_produto_descricao_id_produto` FOREIGN KEY (`id_produto`) REFERENCES `tb_produto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_produto_descricao_id_idioma` FOREIGN KEY (`id_idioma`) REFERENCES `tb_sys_idioma` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_produto_imagem`
 --
 ALTER TABLE `tb_produto_imagem`
-  ADD CONSTRAINT `fk_tb_produto_imagem_tb_midia1` FOREIGN KEY (`id_midia`) REFERENCES `tb_midia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tb_produto_imagem_tb_produto1` FOREIGN KEY (`id_produto`) REFERENCES `tb_produto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tb_produto_imagem_id_midia` FOREIGN KEY (`id_midia`) REFERENCES `tb_midia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tb_produto_imagem_id_produto` FOREIGN KEY (`id_produto`) REFERENCES `tb_produto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tb_sys_config`

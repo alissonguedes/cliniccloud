@@ -19,8 +19,8 @@
 			<div class="grid-col">{{ $row->ultimo_login }}</div>
 			<div class="grid-col center-align">{{ $row->status }}</div>
 			<div class="grid-col center-align">
-				<button data-href="{{ route('clinica.usuarios.edit', $row->id) }}" class="btn btn-flat btn-edit btn-floating float-none">
-					edit
+				<button data-href="{{ route('clinica.usuarios.edit', $row->id) }}" class="btn btn-small btn-edit btn-floating waves-effect blue-text transparent">
+					<i class="material-symbols-outlined">edit</i>
 				</button>
 			</div>
 		</div>
