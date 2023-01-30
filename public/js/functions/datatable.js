@@ -6,6 +6,7 @@ var Datatable = {
 	table: null,
 	url: null,
 	datatable: null,
+	selecteds: [],
 	order: 1,
 	direction: 'asc',
 	query: null,
@@ -16,6 +17,7 @@ var Datatable = {
 		Datatable.query = null;
 		Datatable.url = null;
 		Datatable.datatable = null;
+		Datatable.selecteds = [];
 		Datatable.order = 1;
 		Datatable.direction = 'asc';
 
@@ -28,6 +30,7 @@ var Datatable = {
 
 		Datatable.create();
 		Datatable.request();
+		Datatable.checkbox();
 
 	},
 
@@ -86,12 +89,63 @@ var Datatable = {
 
 	},
 
+	checkbox: () => {
+
+		$('.table.grid').find('.grid-head').find(':input:checkbox').on('change', function() {
+
+			if ($(this).prop('checked')) {
+				$(this).parents('.table.grid').find('.grid-body').find(':checkbox:not(:disabled)').attr('checked', true).change();
+			} else {
+				$(this).parents('.table.grid').find('.grid-body').find(':checkbox:not(:disabled)').attr('checked', false).change();
+			}
+
+		})
+
+		$('.table.grid').find(':input:checkbox').on('change', function() {
+
+			var checked;
+			var checkeds = $(this).parents('.table.grid').find('.grid-body').find(':checkbox:checked:not(:disabled)').length;
+
+			if ($(this).is(':checked')) {
+
+				if ($(this).val() != 'on') {
+					Datatable.selecteds.push($(this).val());
+				}
+
+				$(this).parents('.grid-row').addClass('selected');
+
+			} else {
+
+				$(this).parents('.grid-row').removeClass('selected');
+
+				for (var i = 0; i < Datatable.selecteds.length; i++) {
+					if (Datatable.selecteds[i] === $(this).val())
+						Datatable.selecteds.splice(i, 1);
+				}
+
+
+			}
+
+			if (checkeds > 0) {
+				checked = true;
+				console.log(Datatable.selecteds);
+			} else {
+				checked = false;
+			}
+
+			$(this).parents('.table.grid').find('.grid-head').find(':checkbox#check-all').prop('checked', checked);
+
+		});
+
+	},
+
 	ajax: (data) => {
 
 		var data = !data ? {
 			'order': Datatable.order,
 			'direction': Datatable.direction,
-			'search': Datatable.query
+			'search': Datatable.query,
+			'selecteds': Datatable.selecteds
 		} : data;
 
 		Http.get(window.location.href, {
@@ -100,7 +154,16 @@ var Datatable = {
 		}, (response) => {
 
 			$('.grid-body').html(response);
+
+			if (Datatable.selecteds.length) {
+				for (var i in Datatable.selecteds) {
+					$('.grid-body').find(':checkbox[value="' + Datatable.selecteds[i] + '"]').attr('checked', true);
+					console.log(i, Datatable.selecteds[i]);
+				}
+			}
+
 			Datatable.request();
+			Datatable.checkbox();
 
 		});
 

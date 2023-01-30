@@ -305,6 +305,9 @@ namespace App\Models{
 							->first();
 					}
 
+					// Atualiza a última vez que o usuário logou no sistema.
+					$this->where('id', $user->id)->update(['ultimo_login' => date('Y-m-d H:i:s')]);
+
 					Session::forget('userlogin');
 					Session::put('userdata', $session);
 					Session::put('app_session', $token);
