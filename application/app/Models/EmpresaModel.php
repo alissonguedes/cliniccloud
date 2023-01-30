@@ -86,6 +86,7 @@ class EmpresaModel extends AppModel
 					->orWhere(DB::raw('REGEXP_REPLACE(cnpj, "[^\\x20-\\x7E]", "")'), 'like', limpa_string($search, '') . '%')
 					->orWhere('nome_fantasia', 'like', $search . '%')
 					->orWhere('razao_social', 'like', $search . '%')
+					->orWhere('titulo', 'like', $search . '%')
 					->orWhere('inscricao_estadual', 'like', $search . '%')
 					->orWhere('inscricao_municipal', 'like', $search . '%')
 					->orWhere('email', 'like', $search . '%')

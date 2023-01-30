@@ -8,16 +8,9 @@ var Datatable = {
 	datatable: null,
 	order: 1,
 	direction: 'asc',
-	query: null,
+	search: null,
 
 	constructor: (element) => {
-
-		// redefinindo parâmetros
-		Datatable.query = null;
-		Datatable.url = null;
-		Datatable.datatable = null;
-		Datatable.order = 1;
-		Datatable.direction = 'asc';
 
 		Datatable.table = element ? element : $('table.dataTable');
 		Datatable.url = Datatable.table.data('url') ? Datatable.table.data('url') : window.location.href;
@@ -91,7 +84,7 @@ var Datatable = {
 		var data = !data ? {
 			'order': Datatable.order,
 			'direction': Datatable.direction,
-			'search': Datatable.query
+			'search': Datatable.search
 		} : data;
 
 		Http.get(window.location.href, {
@@ -148,6 +141,8 @@ var Datatable = {
 		if (typeof Datatable.table.data('ajax') !== 'undefined' && !Datatable.table.data('ajax')) {
 			return false;
 		}
+
+		if ($('body').find('table.dataTable').length === 0) return;
 
 		Datatable.datatable = Datatable.table.DataTable({
 			retrieve: true,
@@ -347,7 +342,7 @@ var Datatable = {
 
 				var url = $(this).data('url') || window.location.href;
 
-				Datatable.query = value ? value : null;
+				Datatable.search = value ? value : null;
 				Datatable.ajax();
 
 			});
@@ -371,7 +366,6 @@ var Datatable = {
 			if (search.val()) {
 				Datatable.draw(search.value);
 			}
-
 		}
 
 	}

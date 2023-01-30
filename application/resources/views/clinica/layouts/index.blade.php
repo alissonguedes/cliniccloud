@@ -34,7 +34,7 @@
 				<div class="input-field search bordered border-round z-depth-1">
 					@section('search-label', 'Pesquisar...')
 					<label for="">@yield('search-label')</label>
-					<input type="search" id="search-on-page" data-search="@yield('data-search')">
+					<input type="search" id="search-on-page" data-search="@yield('data-search')" data-json-datatable="@yield('json-datatable', 'false')">
 				</div>
 				@show
 				@section('filters')

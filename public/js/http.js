@@ -146,10 +146,15 @@ var Http = {
 
 		xhr.onloadstart = function(e) {
 
-			var s = $('.sidenav').sidenav();
-			var i = M.Sidenav.getInstance(s);
+			var s = $('.sidenav'),
+				i;
 
-			i.close();
+			if (s.length) {
+				s.sidenav();
+				i = M.Sidenav.getInstance(s)
+				i.close();
+			}
+
 			progress('in');
 
 		}

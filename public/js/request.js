@@ -17,9 +17,17 @@ var Request = {
 
 	},
 
-	disableOnClick: (el) => {
+	isDisabled: (el) => {
 
-		el.attr('disabled', true);
+		var isDisabled = $(el).data('disabled');
+
+		// Não está desabilitado
+		if (isDisabled === true) {
+			return true;
+		}
+
+		// Está desabilitado
+		return false;
 
 	},
 
@@ -29,23 +37,31 @@ var Request = {
 
 	},
 
-	createElement: (element) => {
+	createElement: (element, params = {
+		href: null,
+		target: null,
+		disabled: null
+	}) => {
 
-		var links = link.toString(); // typeof el !== 'undefined' ? el : this.link.toString();
-		var element = typeof element !== 'undefined' ? $(element) : $(element).find(links);
+		// var links = link.toString(); // typeof el !== 'undefined' ? el : this.link.toString();
+		// var element = typeof element !== 'undefined' ? $(element) : $(element).find(links);
 
-		element.each(function() {
+		// console.log(element);
+		// element.each(function() {
 
-			if ($(this).hasClass('modal-trigger')) return false;
+		// 	if ($(this).hasClass('modal-trigger')) return false;
 
-			$(this).on('click', function(e) {
+		element.on('click', function(e) {
+
+			var isDisabled = Request.isDisabled($(this));
+
+			if (!isDisabled) {
 
 				e.preventDefault();
 
 				var href = $(this).data('href') || $(this).attr('href');
 				var target = $(this).attr('target') || false;
 
-				// self.disableOnClick($(this));
 				if (Request.isLink(href) && !target) {
 					Http.get(href);
 				} else {
@@ -61,8 +77,11 @@ var Request = {
 				}
 				// self.enableOnClick($(this));
 
-			});
+			}
+
 		});
+
+		// });
 
 	},
 

@@ -1,4 +1,4 @@
-@extends('clinica.layouts.index')
+@extends('admin.layouts.form')
 
 @php
 $disabled = null;
@@ -6,7 +6,7 @@ $editavel = null;
 $input_label_hidden = null;
 @endphp
 
-@if (session()->get('userdata')[session()->get('app_session')]['id_grupo'] > 1)
+@if (session()->get('userdata')['id_grupo'] > 1)
 
     {? $disabled = isset($row) && $row->editavel === '0' ? 'disabled="disabled"' : false; ?}
 
@@ -23,16 +23,16 @@ $input_label_hidden = null;
 
 @section('buttons')
     @if (isset($row))
-        <button class="btn btn-large excluir waves-effect" value="{{ isset($row) ? $row->id : null }}" data-tooltip="Excluir" data-link="{{ route('clinica.usuarios.delete') }}" style="border: none">
+        <button class="btn btn-large excluir waves-effect" value="{{ isset($row) ? $row->id : null }}" data-tooltip="Excluir" data-link="{{ route('admin.usuarios.delete') }}" style="border: none">
             <i class="material-icons">delete_forever</i>
         </button>
     @endif
 @endsection
 
-@section('main')
+@section('form')
 
     <!-- BEGIN form -->
-    <form novalidate action="{{ route('clinica.usuarios.post') }}" method="post" autocomplete="off">
+    <form novalidate action="{{ route('admin.usuarios.insert') }}" method="post" autocomplete="off">
 
         <!-- BEGIN Input[Nome] -->
         <div class="row">
