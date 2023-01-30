@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Clinica;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
-use \App\Models\UsuarioModel;
+use \App\Models\Admin\UsuarioModel;
 
 class UsuariosController extends Controller
 {
@@ -24,28 +24,28 @@ class UsuariosController extends Controller
 			if ($request->ajax()) {
 				return abort(403);
 			} else {
-				return redirect()->route('clinica.usuarios.login');
+				return redirect()->route('admin.usuarios.login');
 			}
 
 		}
 
 		if ($request->ajax()) {
-			$dados['paginate'] = $this->usuario_model->getUsuario($request);
-			return view('clinica.usuarios.list', $dados);
+			$dados['paginate'] = $this->usuario_model->getUsuario();
+
+			return view('admin.usuarios.list', $dados);
 		}
 
-		$dados['paginate'] = $this->usuario_model->getUsuario($request);
-		return view('clinica.usuarios.index', $dados);
+		return view('admin.usuarios.index');
 	}
 
-	public function form(Request $request, $id = null)
+	public function show_form(Request $request, $id = null)
 	{
 
 		if (!Session::has('userdata')) {
 			if ($request->ajax()) {
 				return abort(403);
 			} else {
-				return redirect()->route('clinica.usuarios.login');
+				return redirect()->route('admin.usuarios.login');
 			}
 
 		}
@@ -53,23 +53,23 @@ class UsuariosController extends Controller
 		$dados = [];
 
 		if (!is_null($id)) {
-			$dados['row'] = $this->usuario_model->getUsuario($request, $id)->first();
+			$dados['row'] = $this->usuario_model->getUsuario($id)->first();
 		}
 
 		$dados['grupos'] = $this->usuario_model->getGrupos();
 
-		return view('clinica.usuarios.form', $dados);
+		return view('admin.usuarios.form', $dados);
 
 	}
 
-	public function create(Request $request)
+	public function insert(Request $request)
 	{
 
 		if (!Session::has('userdata')) {
 			if ($request->ajax()) {
 				return abort(403);
 			} else {
-				return redirect()->route('clinica.usuarios.login');
+				return redirect()->route('admin.usuarios.login');
 			}
 
 		}
@@ -81,8 +81,8 @@ class UsuariosController extends Controller
 			'email' => ['required', 'unique:tb_acl_usuario,email'],
 		]);
 
-		$url  = route('clinica.usuarios.index');
-		$type = 'redirect';
+		$url  = url('admin/usuarios ');
+		$type = 'back';
 
 		if ($this->usuario_model->create($request)) {
 			$status  = 'success';
@@ -95,14 +95,14 @@ class UsuariosController extends Controller
 		return json_encode(['status' => $status, 'message' => $message, 'type' => $type, 'url' => $url]);
 	}
 
-	public function edit(Request $request)
+	public function update(Request $request)
 	{
 
 		if (!Session::has('userdata')) {
 			if ($request->ajax()) {
 				return abort(403);
 			} else {
-				return redirect()->route('clinica.usuarios.login');
+				return redirect()->route('admin.usuarios.login');
 			}
 
 		}
@@ -120,8 +120,8 @@ class UsuariosController extends Controller
 			],
 		]);
 
-		$url  = route('clinica.usuarios.index');
-		$type = 'redirect';
+		$url  = url('admin/usuarios ');
+		$type = 'back';
 
 		if ($this->usuario_model->edit($request)) {
 			$status  = 'success';
@@ -141,13 +141,13 @@ class UsuariosController extends Controller
 			if ($request->ajax()) {
 				return abort(403);
 			} else {
-				return redirect()->route('clinica.usuarios.login');
+				return redirect()->route('admin.usuarios.login');
 			}
 
 		}
 
-		$url  = route('clinica.usuarios.index');
-		$type = 'redirect';
+		$url  = url('admin/usuarios');
+		$type = null;
 
 		if ($this->usuario_model->edit($request, $field)) {
 			$status  = 'success';
@@ -167,13 +167,13 @@ class UsuariosController extends Controller
 			if ($request->ajax()) {
 				return abort(403);
 			} else {
-				return redirect()->route('clinica.usuarios.login');
+				return redirect()->route('admin.usuarios.login');
 			}
 
 		}
 
-		$url  = route('clinica.usuarios.index');
-		$type = 'redirect';
+		$url  = url('admin/usuarios');
+		$type = 'back';
 
 		if ($this->usuario_model->remove($request)) {
 			$status  = 'success';

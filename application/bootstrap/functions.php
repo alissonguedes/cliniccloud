@@ -805,3 +805,19 @@ if (!function_exists('credit_card')) {
 	}
 
 }
+
+if (!function_exists('random')) {
+
+	function random($array = [])
+	{
+
+		if (empty($array)) {
+			return 'Conjunto de elementos não foi definido.';
+		}
+
+		$rand = rand(0, count($array) - 1);
+
+		return $array[$rand];
+
+	}
+}

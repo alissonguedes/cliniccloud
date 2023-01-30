@@ -1,8 +1,8 @@
-@extends('clinica.layouts.index')
+@extends('admin.layouts.app')
 
 @section('title', 'Usuários')
 
-@section('main')
+@section('content')
 
     <div class="responsive-table">
 
@@ -11,7 +11,7 @@
             <div class="actions action-btns flex flex-col align-itens-center">
 
                 <div class="show-buttons">
-                    <button type="button" class="btn btn-large waves-effect" data-href="{{ route('clinica.usuarios.add') }}" data-tooltip="Adicionar">
+                    <button type="button" class="btn btn-large waves-effect" data-href="{{ route('admin.usuarios.add') }}" data-tooltip="Adicionar">
                         <i class="material-icons">
                             add
                         </i>
@@ -20,15 +20,15 @@
 
                 <div class="hide-buttons">
 
-                    {{-- <button class="btn btn-large waves-effect translator" data-link="{{ route('clinica.dicionario') }}" data-tooltip="Traduzir" style="border: none">
+                    {{-- <button class="btn btn-large waves-effect translator" data-link="{{ route('admin.dicionario') }}" data-tooltip="Traduzir" style="border: none">
                         <i class="material-icons">translate</i>
                     </button> --}}
 
-                    <button class="btn btn-large update waves-effect" name="status" value="0" data-tooltip="" data-on="Bloquear" data-off="Desbloquear" data-link="{{ route('clinica.usuarios.patch', 'status') }}" data-method="patch">
+                    <button class="btn btn-large update waves-effect" name="status" value="0" data-tooltip="" data-on="Bloquear" data-off="Desbloquear" data-link="{{ route('admin.usuarios.patch', 'status') }}" data-method="patch">
                         <i class="material-icons" data-on="lock" data-off="lock_open"></i>
                     </button>
 
-                    <button class="btn btn-large excluir waves-effect" disabled="disabled" data-link="{{ route('clinica.usuarios.delete') }}" style="border: none" data-tooltip="Excluir">
+                    <button class="btn btn-large excluir waves-effect" disabled="disabled" data-link="{{ route('admin.usuarios.delete') }}" style="border: none" data-tooltip="Excluir">
                         <i class="material-icons">delete_forever</i>
                     </button>
 
@@ -46,7 +46,7 @@
 
         <div class="content">
 
-            <table class="table dataTable no-footer">
+            <table class="table dataTable no-footer" data-link="{{ route('admin.usuarios') }}">
                 <thead>
                     <tr>
                         <th class="disabled sortable white-text" width="1%" data-orderable="false">
