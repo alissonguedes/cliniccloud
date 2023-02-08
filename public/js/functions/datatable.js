@@ -94,17 +94,19 @@ var Datatable = {
 		$('.table.grid').find('.grid-head').find(':input:checkbox').on('change', function() {
 
 			if ($(this).prop('checked')) {
-				$(this).parents('.table.grid').find('.grid-body').find(':checkbox:not(:disabled)').attr('checked', true).change();
+				$(this).parents('.table.grid').find('.grid-body').find(':checkbox:not(:disabled)').prop('checked', true).change();
 			} else {
-				$(this).parents('.table.grid').find('.grid-body').find(':checkbox:not(:disabled)').attr('checked', false).change();
+				$(this).parents('.table.grid').find('.grid-body').find(':checkbox:not(:disabled)').prop('checked', false).change();
 			}
 
-		})
+		});
 
 		$('.table.grid').find(':input:checkbox').on('change', function() {
 
 			var checked;
 			var checkeds = $(this).parents('.table.grid').find('.grid-body').find(':checkbox:checked:not(:disabled)').length;
+			var count_checkboxes = $(this).parents('.table.grid').find('.grid-body').find(':checkbox:not(:disabled)').length;
+			var indeterminateCheckbox = document.getElementById($('.table.grid').find('.grid-head').find(':input:checkbox').attr('id'));
 
 			if ($(this).is(':checked')) {
 
@@ -123,17 +125,46 @@ var Datatable = {
 						Datatable.selecteds.splice(i, 1);
 				}
 
-
 			}
 
 			if (checkeds > 0) {
+
 				checked = true;
-				console.log(Datatable.selecteds);
+
+				if (checkeds === count_checkboxes) {
+					indeterminateCheckbox.indeterminate = false;
+				} else {
+					if (checkeds < count_checkboxes) {
+						if (typeof indeterminateCheckbox !== 'undefined' && indeterminateCheckbox !== null) {
+							indeterminateCheckbox.indeterminate = true;
+						}
+					}
+				}
+
 			} else {
+				indeterminateCheckbox.indeterminate = false;
 				checked = false;
 			}
 
 			$(this).parents('.table.grid').find('.grid-head').find(':checkbox#check-all').prop('checked', checked);
+
+			if (checked) {
+				$('#dropdown-actions').find('#btn-delete')
+					.attr('disabled', false)
+					.parent('li')
+					.removeClass('disabled');
+			} else {
+				$('#dropdown-actions').find('#btn-delete')
+					.attr('disabled', true)
+					.parent('li')
+					.addClass('disabled');
+			}
+
+			if (indeterminateCheckbox.indeterminate) {
+				$(indeterminateCheckbox).addClass('indeterminate');
+			} else {
+				$(indeterminateCheckbox).removeClass('indeterminate');
+			}
 
 		});
 
@@ -157,7 +188,8 @@ var Datatable = {
 
 			if (Datatable.selecteds.length) {
 				for (var i in Datatable.selecteds) {
-					$('.grid-body').find(':checkbox[value="' + Datatable.selecteds[i] + '"]').attr('checked', true);
+					$('.grid-body').find(':checkbox[value="' + Datatable.selecteds[i] + '"]').attr('checked', true)
+						.parents('.grid-row').addClass('selected');
 					console.log(i, Datatable.selecteds[i]);
 				}
 			}

@@ -42,7 +42,7 @@
 
 	<div class="row" style="position: fixed; z-index: 999999; top: 0;">
 		<div class="col s4">
-			<div id="alerts" class="modal">
+			<div id="alerts" class="modal modal-fixed-footer">
 				<div class="modal-content">
 					<h5 class="title"></h5>
 					<br>

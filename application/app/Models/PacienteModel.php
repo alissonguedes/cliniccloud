@@ -34,10 +34,9 @@ class PacienteModel extends Model
 			'nome',
 			'codigo',
 			'imagem',
-			'id_convenio',
-			'id_acomodacao',
-			'matricula_convenio',
-			DB::raw('DATE_FORMAT(validade_convenio, "%d/%m/%Y") AS validade_convenio'),
+			'associado',
+			'matricula',
+			'validade',
 			'id_estado_civil',
 			'id_etnia',
 			'sexo',
@@ -68,7 +67,6 @@ class PacienteModel extends Model
 			DB::raw('DATE_FORMAT(datahora_obito, "%d/%m/%Y") AS data_obito'),
 			DB::raw('DATE_FORMAT(datahora_obito, "%H:%i") AS hora_obito'),
 			'status',
-			DB::raw('(SELECT descricao FROM tb_convenio WHERE id = id_convenio) AS convenio'),
 			DB::raw('(SELECT descricao FROM tb_etnia WHERE id = id_etnia) AS etnia'),
 			DB::raw('DATE_FORMAT(data_nascimento, "%d/%m/%Y") AS data_nascimento'),
 		);
@@ -78,7 +76,7 @@ class PacienteModel extends Model
 				$query
 					->orWhere('codigo', 'like', $search . '%')
 					->orWhere('nome', 'like', $search . '%')
-					->orWhere('matricula_convenio', 'like', $search . '%')
+					->orWhere('matricula', 'like', $search . '%')
 					->orWhere('rg', 'like', $search . '%')
 					->orWhere('email', 'like', $search . '%')
 					->orWhere('cpf', 'like', $search . '%')
@@ -179,10 +177,9 @@ class PacienteModel extends Model
 	public function cadastraPaciente($post)
 	{
 
-		$id_convenio          = $post->convenio ?? 1;
-		$matricula_convenio   = $post->matricula ?? null;
-		$validade_convenio    = $post->validade_convenio ? convert_to_date($post->validade_convenio, 'Y-m-d') : null;
-		$id_acomodacao        = $post->acomodacao ?? 1;
+		$associado            = $post->associado === '1' ? 'yes' : 'no';
+		$matricula            = $post->matricula;
+		$validade             = $post->validade ?? null;
 		$id_estado_civil      = $post->estado_civil;
 		$id_etnia             = $post->etnia ?? 1;
 		$nome                 = $post->nome;
@@ -217,10 +214,9 @@ class PacienteModel extends Model
 		$status               = ($obito == '0' && $post->status) ? '1' : '0';
 
 		$data = [
-			'id_convenio'          => $id_convenio,
-			'matricula_convenio'   => $matricula_convenio,
-			'validade_convenio'    => $validade_convenio,
-			'id_acomodacao'        => $id_acomodacao,
+			'associado'            => $associado,
+			'matricula'            => $matricula,
+			'validade'             => $validade,
 			'id_estado_civil'      => $id_estado_civil,
 			'id_etnia'             => $id_etnia,
 			'codigo'               => $codigo,
@@ -265,10 +261,9 @@ class PacienteModel extends Model
 	public function editaPaciente(Request $post, $id)
 	{
 
-		$id_convenio          = $post->convenio ?? 1;
-		$matricula_convenio   = $post->matricula ?? null;
-		$validade_convenio    = $post->validade_convenio ? convert_to_date($post->validade_convenio, 'Y-m-d') : null;
-		$id_acomodacao        = $post->acomodacao ?? 1;
+		$associado            = $post->associado === '1' ? 'yes' : 'no';
+		$matricula            = $post->matricula;
+		$validade             = $post->validade ?? null;
 		$id_estado_civil      = $post->estado_civil;
 		$id_etnia             = $post->etnia ?? 1;
 		$nome                 = $post->nome;
@@ -302,14 +297,12 @@ class PacienteModel extends Model
 		$status               = ($obito == '0' && $post->status) ? '1' : '0';
 
 		$data = [
-			'id_convenio'          => $id_convenio,
-			'matricula_convenio'   => $matricula_convenio,
-			'validade_convenio'    => $validade_convenio,
-			'id_acomodacao'        => $id_acomodacao,
+			'associado'            => $associado,
+			'matricula'            => $matricula,
+			'validade'             => $validade,
 			'id_estado_civil'      => $id_estado_civil,
 			'id_etnia'             => $id_etnia,
 			'nome'                 => $nome,
-			// 'codigo'               => $codigo,
 			'sexo'                 => $sexo,
 			'data_nascimento'      => $data_nascimento,
 			'cpf'                  => $cpf,

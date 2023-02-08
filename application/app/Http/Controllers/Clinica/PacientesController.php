@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Clinica{
 	use App\Models\ConvenioModel;
 	use App\Models\EstadoCivilModel;
 	use App\Models\PacienteModel;
+	use Faker\Factory as Faker;
 	use Illuminate\Http\Request;
+	use Illuminate\Support\Facades\Session;
 	use Illuminate\Validation\Rule;
 
 	class PacientesController extends Controller
@@ -17,11 +19,15 @@ namespace App\Http\Controllers\Clinica{
 			$this->convenio_model    = new ConvenioModel();
 			$this->paciente_model    = new PacienteModel();
 			$this->estadoCivil_model = new EstadoCivilModel();
+			$this->faker             = new Faker();
 
 		}
 
 		public function index(Request $request)
 		{
+
+			// Remover a sessão de geração da matrícula do convênio para liberar
+			Session::forget('matricula');
 
 			// Pesquisar pacientes
 			if ($request->ajax()) {
@@ -29,19 +35,31 @@ namespace App\Http\Controllers\Clinica{
 				return response(view('clinica.pacientes.results', $dados), 200);
 			}
 
+			$dados['faker']     = $this->faker::create('pt_BR');
 			$dados['pacientes'] = $this->paciente_model->getPacientes($request);
+
 			return response(view('clinica.pacientes.index', $dados), 200);
 
 		}
 
 		public function form(Request $request, $id = null)
 		{
+			// Remover a sessão de geração da matrícula do convênio para liberar
+			// Session::forget('matricula');
+
+			if (!session()->exists('matricula')) {
+				session()->put('matricula', gera_cartao(null, true));
+				$dados['matricula'] = session()->get('matricula');
+			} else {
+				$dados['matricula'] = session()->get('matricula');
+			}
 
 			$dados['row']          = $this->paciente_model->getPacienteById($request->id);
 			$dados['acomodacoes']  = $this->paciente_model->getAcomodacao();
 			$dados['etnias']       = $this->paciente_model->getEtnia();
 			$dados['convenios']    = $this->convenio_model->getConvenio();
 			$dados['estado_civil'] = $this->estadoCivil_model->getEstadoCivil();
+
 			return view('clinica.pacientes.form', $dados);
 
 		}
@@ -125,6 +143,9 @@ namespace App\Http\Controllers\Clinica{
 			$url    = url()->route('clinica.pacientes.edit', $id);
 			$type   = 'redirect';
 
+			// Remover a sessão de geração da matrícula do convênio para liberar
+			Session::forget('matricula_convenio');
+
 			return response()->json([
 				'status'      => $status,
 				'message'     => 'Paciente cadastrado com sucesso!',
@@ -152,6 +173,9 @@ namespace App\Http\Controllers\Clinica{
 			$url    = url()->route('clinica.pacientes.index');
 			$type   = 'redirect';
 
+			// Remover a sessão de geração da matrícula do convênio para liberar
+			Session::forget('matricula_convenio');
+
 			if (request()->ajax()) {
 
 				return response()->json([
@@ -162,12 +186,15 @@ namespace App\Http\Controllers\Clinica{
 					'type'        => $type,
 					'url'         => $url,
 				]);
+
 			} else {
+
 				return redirect($url)
 					->with([
 						'status'  => 'success',
 						'message' => 'Dados atualizados com sucesso',
 					]);
+
 			}
 
 		}

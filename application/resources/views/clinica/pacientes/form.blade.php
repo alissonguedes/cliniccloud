@@ -43,7 +43,7 @@
 								<li class="tab">
 									<a href="#informacoes_convenio">
 										{{-- <i class="material-icons-outlined">list</i> --}}
-										Convênio
+										Convênios
 									</a>
 								</li>
 								<li class="tab">
@@ -102,13 +102,9 @@
 													</div>
 													<div class="col s12 m4 l4">
 														<div class="input-field">
-															<label for="codigo" class="active">Código</label>
+															<label for="codigo" class="active">Matrícula</label>
 															<div class="input-label">
-																@if($row && $row->codigo)
-																	{{ $row->codigo }}
-																@else
-																	<span style="font-size: 12px">Será gerado automaticamente</span>
-																@endif
+																Será gerado automaticamente
 															</div>
 														</div>
 													</div>
@@ -201,6 +197,12 @@
 												</div>
 											</div>
 										</div>
+										{{-- @if(isset($row))
+											<div class="row">
+												<div class="col s12">
+													{!! QrCode::size(300)->generate(url('https://cliniccloud.com.br/pacientes/id/'.$row->id)) !!}
+												</div>
+											</div>@endif--}}
 									</div>
 									<!-- END #informacoes_pessoais -->
 
@@ -271,92 +273,216 @@
 
 									<!-- BEGIN #informacoes_convenio -->
 									<div id="informacoes_convenio">
-										 <div class="row">
-											<div class="col s12 m6 l6 mt-3 mb-3">
-												<h6>Plano Médicus24h</h6>
+
+										<div class="row">
+											<div class="col s12 m12 l12 mt-3 mb-3">
+												<h6>Convênios</h6>
 											</div>
 										</div>
+
 										<div class="row">
-											<div class="col s12 m6 l6">
-												<span class="label">Paciente conveniado?</span>
-												<div class="switch mt-3">
-													<label class="">
-														Não
-														<input type="checkbox" name="conveniado" id="conveniado" value="1" {{ $row && $row->conveniado == '1' ? 'checked=checked' : null }}>
-														<span class="lever"></span>
-														Sim
+											<div class="col s12 m12 l12 mb-3">
+												<h6>
+													<label for="associado" style="font-size: inherit; color: inherit;">
+														<input type="checkbox" name="associado" class="filled-in" id="associado" value="1" @if($row && $row -> associado === 'yes') checked="checked" @endif>
+														<span class="left">Paciente associado ao Plano Médicus24h</span>
 													</label>
+												</h6>
+											</div>
+										</div>
+
+										<div id="conv_medicus24h" data-title="{{ $row && $row->nome ? limpa_string($row->nome, '-') : null }}" class="@if(!$row || ($row && $row->associado === 'no')) hide @endif">
+											<div class="row">
+												<div class="col s6">
+													<div class="row">
+														<div class="col s12">
+															<div class="input-field">
+																<label for="tipo_convenio">Tipo do plano</label>
+																<select name="tipo_convenio" id="tipo_convenio">
+																	<option value="" disabled selected>Informe o convênio</option>
+																	{{-- @foreach($convenios as $convenio)
+																		<option value="{{ $convenio->id }}" {{ $row && $convenio->id==$row->id_convenio ? 'selected=selected' : null }}>{{ $convenio->descricao }}</option>
+																	@endforeach--}}
+																</select>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<label class="active" for="carteira">Número da carteira</label>
+																<div class="input-label">
+																	@php
+																		if($row && $row->matricula):
+																		session()->forget('matricula');
+																		$matricula = $row->matricula;
+																		endif;
+																	@endphp
+																	{{ $matricula }}
+																	<input type="hidden" name="matricula" value="{{ $matricula }}">
+																</div>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<label class="active" for="carteira">Validade</label>
+																@php
+																	$mes = null;
+																	$ano = null;
+																	if( $row && $row->validade) {
+																	$validade = explode('-', $row->validade);
+																	$mes = $validade[1];
+																	$ano = $validade[0];
+																	}
+																	$meses = ['01'=>'Jan', '02'=>'Fev', '03'=>'Mar', '04'=>'Abr', '05'=>'Mai', '06'=>'Jun', '07'=>'Jul', '08'=>'Ago', '09'=>'Set', '10'=>'Out', '11'=>'Nov', '12'=>'Dez',];
+																@endphp
+																<div class="row">
+																	<div class="col s6">
+																		<select name="validade[]" id="mes">
+																			<option value="" selected="selected" disabled="disabled">-</option>
+																			@foreach($meses as $i => $m)
+																				<option value="{{ $i }}" @if($i==$mes) selected="selected" @endif>{{ $m }}</option>
+																			@endforeach
+																		</select>
+																	</div>
+																	<div class="col s6">
+																		<select name="validade[]" id="ano">
+																			<option value="" selected="selected" disabled="disabled">-</option>
+																			@for($i = date('Y'); $i <= date('Y') + 20; $i ++)
+																				<option value="{{ $i }}" @if($i==$ano) selected="selected" @endif>{{ $i }}</option>
+																			@endfor
+																		</select>
+																	</div>
+																</div>
+																<input type="hidden" name="validade" value="{{ $row->validade ?? null }}">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col s6">
+													<div id="cartao_convenio" class="credit_card flex flex-end">
+														<div class="frente">
+															<div class="logo left"></div>
+															<div class="logo right">
+																<h4>Assistência</h4>
+																<h5>Saúde</h5>
+															</div>
+															<div class="content">
+																<div class="row">
+																	<div class="col s12">
+																		<div class="row">
+																			<div class="col s12">
+																				{{-- <span>Nome</span> --}}
+																				<p id="nome_paciente">{{ $row->nome ?? null }}</p>
+																			</div>
+																		</div>
+																		<div class="row">
+																			<div class="col s6">
+																				<span>CPF</span>
+																				<p id="cpf_paciente">{{ $row->cpf ?? null }}</p>
+																			</div>
+																			<div class="col s6">
+																				<span>Data de nascimento</span>
+																				<p id="data_nascimento_paciente">{{ $row->data_nascimento ?? null }}</p>
+																			</div>
+																		</div>
+																		<div class="row">
+																			<div class="col s6">
+																				<span>Matrícula</span>
+																				<p>{{ $matricula ?? null }}</p>
+																			</div>
+																			<div class="col s6">
+																				<span>Validade</span>
+																				<p id="validade_convenio_paciente">{{ $row && $row->validade ? $mes . '/' . $ano[2] . $ano[3] : null }}</p>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="footer center-align">
+																<p>www.medicus24h.com.br</p>
+															</div>
+														</div>
+														<div class="verso">
+															<div class="content">
+																<div class="row">
+																	<div class="col s12">
+																		<div class="row">
+																			<div class="col s6">
+																				<span>Tipo do plano</span>
+																				<p id="tipo_plano">{{ $row->tipo_plano ?? null }}</p>
+																			</div>
+																			<div class="col s6">
+																				<span>Acomodação</span>
+																				<p id="acomodacao_plano">{{ $row->acomodacao ?? null }}</p>
+																			</div>
+																		</div>
+																		<div class="row">
+																			<div class="col s6">
+																				<span>CNS</span>
+																				<p id="cns_paciente">{{ $row->cns ?? null }}</p>
+																			</div>
+																		</div>
+																		<div class="row">
+																			<div class="col s12">
+																				<span>Validade</span>
+																				<p id="validade_convenio_paciente">{{ $row && $row->validade ? $mes . '/' . $ano[2] . $ano[3] : null }}</p>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="footer center-align black">
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col s12">
+															<div id="print_card" class="pointer btn waves-effect green darken-1">Imprimir cartão</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col s12">
+													<div class="divider mt-3 mb-3"></div>
 												</div>
 											</div>
 										</div>
+
 										<div class="row">
-											<div class="col s12 m3 l3">
-												<div class="input-field">
-													<label for="carteira">Carteira Médicus24h</label>
-													<input type="text" name="numero_carteira" value="{{ $row->numero_carteira ?? null }}" data-mask="credit_card">
-												</div>
-											</div>
-											<div class="col s12 m3 l3">
-												<div class="input-field">
-													<label for="carteira">Carteira Médicus24h</label>
-													<input type="text" name="numero_carteira" value="{{ $row->numero_carteira ?? null }}" data-mask="credit_card">
-												</div>
-											</div>
-											<div class="col s12 m4 l4">
-												<div class="input-field">
-													<label for="tipo_convenio">Tipo do convênio</label>
-													<select name="tipo_convenio" id="tipo_convenio">
-														<option value="" disabled selected>Informe o convênio</option>
-														{{-- @foreach($convenios as $convenio)
-															<option value="{{ $convenio->id }}" {{ $row && $convenio->id==$row->id_convenio ? 'selected=selected' : null }}>{{ $convenio->descricao }}</option>
-														@endforeach--}}
-													</select>
-												</div>
+											<div class="col s12 m6 l6 mt-3 mb-3">
+												<h6>Outros Convênios</h6>
 											</div>
 										</div>
+
 										<div class="row">
-											<div class="col s12 mt-3 mb-3">
-												<h6>Convênio</h6>
+											<div class="col s12 m6 l3 mb-3">
+												<button type="button" id="add_plano" class="btn flex blue darken-1 waves-effect" style="width: 100%;">
+													<i class="material-icons mr-6">add</i>
+													Adicionar Convênio
+												</button>
 											</div>
 										</div>
+
 										<div class="row">
-											<div class="col s12 m4 l4">
-												<div class="input-field">
-													<label for="convenio">Convênio</label>
-													<select name="convenio" id="convenio">
-														<option value="" disabled selected>Informe o convênio</option>
-														@foreach($convenios as $convenio)
-															<option value="{{ $convenio->id }}" {{ $row && $convenio->id==$row->id_convenio ? 'selected=selected' : null }}>{{ $convenio->descricao }}</option>
-														@endforeach
-													</select>
-												</div>
-											</div>
-											<div class="col s12 m4 l4">
-												<div class="input-field">
-													<label for="acomodacao">Acomodação</label>
-													<select name="acomodacao" id="acomodacao">
-														<option value="" disabled selected>Informe o tipo de acomodação</option>
-														@foreach($acomodacoes as $acomodacao)
-															<option value="{{ $acomodacao->id }}" {{ $row && $acomodacao->id==$row->id_acomodacao ? 'selected=selected' : null }}>{{ $acomodacao->descricao }}</option>
-														@endforeach
-													</select>
-												</div>
-											</div>
-											<div class="col s12 m3 l4">
-												<div class="input-field">
-													<label for="matricula">Matrícula</label>
-													<input type="text" name="matricula" id="matricula" value="{{ $row->matricula_convenio ?? null }}">
-												</div>
+											<div class="col s12">
+												<table id="plano_saude">
+													<thead>
+														<tr>
+															<th>Definido</th>
+															<th>Convênio</th>
+															<th>Tipo</th>
+															<th>Acomodação</th>
+															<th>Nº da Carteira</th>
+															<th>Validade</th>
+														</tr>
+													</thead>
+													<tbody>
+														@include('clinica.pacientes.convenios')
+													</tbody>
+												</table>
 											</div>
 										</div>
-										<div class="row">
-											<div class="col s12 m3 l4">
-												<div class="input-field">
-													<label for="validade_convenio">Validade</label>
-													<input type="text" name="validade_convenio" id="validade_convenio" value="{{ $row->validade_convenio ?? null }}" data-mask="date" data-min-date="{{ date('d/m/Y') }}">
-												</div>
-											</div>
-										</div>
+
 									</div>
 									<!-- END #informacoes_convenio -->
 
@@ -519,6 +645,77 @@
 
 </div>
 
+<div id="form_plano_saude" class="modal" style="overflow-y: auto;">
+	<form action="{{ go('clinica.planosdesaude.add') }}">
+		<div class="modal-content">
+			<div class="row">
+				<div class="col s12">
+					<div class="input-field">
+						<label for="convênio">Convênio</label>
+						<select name="convenio" id="convenio">
+							<option value="" disabled selected>Informe o convênio</option>
+							@foreach($convenios as $convenio)
+								<option value="{{ $convenio->id }}" {{ $row && $convenio->id==$row->id_convenio ? 'selected=selected' : null }}>{{ $convenio->descricao }}</option>
+							@endforeach
+						</select>
+					</div>
+				</div>
+				<div class="col s12">
+					<div class="input-field">
+						<label for="convênio">Tipo do Convênio</label>
+						<select name="tipo_convenio" id="tipo_convenio">
+							<option value="" disabled selected>Informe o convênio</option>
+							{{-- @foreach($convenios as $convenio)
+											<option value="{{ $convenio->id }}" {{ $row && $convenio->id==$row->id_convenio ? 'selected=selected' : null }}>{{ $convenio->descricao }}</option>
+							@endforeach--}}
+						</select>
+					</div>
+				</div>
+				<div class="col s12">
+					<div class="input-field">
+						<label for="convênio_convenio">Tipo de acomodação</label>
+						<select name="acomodacao_convenio" id="acomodacao_convenio">
+							<option value="" disabled selected>Informe o tipo de acomodação</option>
+							@foreach($acomodacoes as $acomodacao)
+								<option value="{{ $acomodacao->id }}" {{ $row && $acomodacao->id==$row->id_acomodacao ? 'selected=selected' : null }}>{{ $acomodacao->descricao }}</option>
+							@endforeach
+						</select>
+					</div>
+				</div>
+				<div class="col s12 m6 l6">
+					<div class="input-field">
+						<label for="matricula_convenio">Matrícula</label>
+						<input type="text" name="matricula_convenio" id="matricula_convenio" value="{{ $row->matricula_convenio ?? null }}">
+					</div>
+				</div>
+				<div class="col s12 m6 l6">
+					<div class="input-field">
+						<label for="validade_convenio">Validade</label>
+						<input type="text" name="validade_convenio" id="validade_convenio" value="{{ $row->validade_convenio ?? null }}" data-mask="date" data-min-date="{{ date('d/m/Y') }}">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer bordered">
+			<button type="reset" class="btn white black-text lighten-1 modal-close">Fechar</button>
+			<button type="submit" class="btn blue lighten-1">Adicionar</button>
+		</div>
+	</form>
+</div>
+
+<div id="modal_cartao_convenio" class="modal modal-fixed-footer">
+	<div class="modal-content white"></div>
+	<div class="modal-footer">
+
+		<button type="reset" class="btn waves-effect modal-close white mr-2">
+			<i class="material-symbols-outlined black-text">close</i>
+		</button>
+
+		<button type="button" class="btn waves-effect" data-trigger="print">
+			<i class="material-symbols-outlined">print</i>
+		</button>
+	</div>
+</div>
 
 
 @endsection

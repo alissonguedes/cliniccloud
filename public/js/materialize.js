@@ -145,7 +145,7 @@ var Materialize = {
 			defaultDate = defaultDate ? new Date(defaultDate[2], defaultDate[1] - 1, defaultDate[0]) : null;
 
 			$(this).datepicker({
-				format: 'dd/mm/yyyy',
+				format: $(this).data('format') || 'dd/mm/yyyy',
 				startView: 1,
 				autoClose: true,
 				setDefaultDate: true,
