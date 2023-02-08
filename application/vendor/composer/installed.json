@@ -56,6 +56,63 @@
             "install-path": "../asm89/stack-cors"
         },
         {
+            "name": "bacon/bacon-qr-code",
+            "version": "2.0.8",
+            "version_normalized": "2.0.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Bacon/BaconQrCode.git",
+                "reference": "8674e51bb65af933a5ffaf1c308a660387c35c22"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Bacon/BaconQrCode/zipball/8674e51bb65af933a5ffaf1c308a660387c35c22",
+                "reference": "8674e51bb65af933a5ffaf1c308a660387c35c22",
+                "shasum": ""
+            },
+            "require": {
+                "dasprid/enum": "^1.0.3",
+                "ext-iconv": "*",
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "phly/keep-a-changelog": "^2.1",
+                "phpunit/phpunit": "^7 | ^8 | ^9",
+                "spatie/phpunit-snapshot-assertions": "^4.2.9",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "suggest": {
+                "ext-imagick": "to generate QR code images"
+            },
+            "time": "2022-12-07T17:46:57+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "BaconQrCode\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ben Scholzen 'DASPRiD'",
+                    "email": "mail@dasprids.de",
+                    "homepage": "https://dasprids.de/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "BaconQrCode is a QR code generator for PHP.",
+            "homepage": "https://github.com/Bacon/BaconQrCode",
+            "support": {
+                "issues": "https://github.com/Bacon/BaconQrCode/issues",
+                "source": "https://github.com/Bacon/BaconQrCode/tree/2.0.8"
+            },
+            "install-path": "../bacon/bacon-qr-code"
+        },
+        {
             "name": "brick/math",
             "version": "0.10.2",
             "version_normalized": "0.10.2.0",
@@ -189,6 +246,56 @@
                 }
             ],
             "install-path": "./package-versions-deprecated"
+        },
+        {
+            "name": "dasprid/enum",
+            "version": "1.0.3",
+            "version_normalized": "1.0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DASPRiD/Enum.git",
+                "reference": "5abf82f213618696dda8e3bf6f64dd042d8542b2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DASPRiD/Enum/zipball/5abf82f213618696dda8e3bf6f64dd042d8542b2",
+                "reference": "5abf82f213618696dda8e3bf6f64dd042d8542b2",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7 | ^8 | ^9",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "time": "2020-10-02T16:03:48+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "DASPRiD\\Enum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ben Scholzen 'DASPRiD'",
+                    "email": "mail@dasprids.de",
+                    "homepage": "https://dasprids.de/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP 7.1 enum implementation",
+            "keywords": [
+                "enum",
+                "map"
+            ],
+            "support": {
+                "issues": "https://github.com/DASPRiD/Enum/issues",
+                "source": "https://github.com/DASPRiD/Enum/tree/1.0.3"
+            },
+            "install-path": "../dasprid/enum"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -6139,6 +6246,77 @@
             "install-path": "../sebastian/version"
         },
         {
+            "name": "simplesoftwareio/simple-qrcode",
+            "version": "4.2.0",
+            "version_normalized": "4.2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SimpleSoftwareIO/simple-qrcode.git",
+                "reference": "916db7948ca6772d54bb617259c768c9cdc8d537"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SimpleSoftwareIO/simple-qrcode/zipball/916db7948ca6772d54bb617259c768c9cdc8d537",
+                "reference": "916db7948ca6772d54bb617259c768c9cdc8d537",
+                "shasum": ""
+            },
+            "require": {
+                "bacon/bacon-qr-code": "^2.0",
+                "ext-gd": "*",
+                "php": ">=7.2|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~1",
+                "phpunit/phpunit": "~9"
+            },
+            "suggest": {
+                "ext-imagick": "Allows the generation of PNG QrCodes.",
+                "illuminate/support": "Allows for use within Laravel."
+            },
+            "time": "2021-02-08T20:43:55+00:00",
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider"
+                    ],
+                    "aliases": {
+                        "QrCode": "SimpleSoftwareIO\\QrCode\\Facades\\QrCode"
+                    }
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "SimpleSoftwareIO\\QrCode\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simple Software LLC",
+                    "email": "support@simplesoftware.io"
+                }
+            ],
+            "description": "Simple QrCode is a QR code generator made for Laravel.",
+            "homepage": "https://www.simplesoftware.io/#/docs/simple-qrcode",
+            "keywords": [
+                "Simple",
+                "generator",
+                "laravel",
+                "qrcode",
+                "wrapper"
+            ],
+            "support": {
+                "issues": "https://github.com/SimpleSoftwareIO/simple-qrcode/issues",
+                "source": "https://github.com/SimpleSoftwareIO/simple-qrcode/tree/4.2.0"
+            },
+            "install-path": "../simplesoftwareio/simple-qrcode"
+        },
+        {
             "name": "spatie/backtrace",
             "version": "1.2.1",
             "version_normalized": "1.2.1.0",
@@ -10209,6 +10387,170 @@
                 "source": "https://github.com/Nexmo/vonage-php-nexmo-bridge/tree/0.1.1"
             },
             "install-path": "../vonage/nexmo-bridge"
+        },
+        {
+            "name": "webklex/laravel-imap",
+            "version": "4.1.2",
+            "version_normalized": "4.1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Webklex/laravel-imap.git",
+                "reference": "9038139b8789e60c998eb389d419d41b969f2713"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Webklex/laravel-imap/zipball/9038139b8789e60c998eb389d419d41b969f2713",
+                "reference": "9038139b8789e60c998eb389d419d41b969f2713",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "ext-iconv": "*",
+                "ext-mbstring": "*",
+                "laravel/framework": ">=5.0.0",
+                "php": ">=5.5.9",
+                "webklex/php-imap": "^4.1.2"
+            },
+            "time": "2023-01-18T18:33:20+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Webklex\\IMAP\\Providers\\LaravelServiceProvider"
+                    ],
+                    "aliases": {
+                        "Client": "Webklex\\IMAP\\Facades\\Client"
+                    }
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Webklex\\IMAP\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Malte Goldenbaum",
+                    "email": "github@webklex.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel IMAP client",
+            "homepage": "https://github.com/webklex/laravel-imap",
+            "keywords": [
+                "idle",
+                "imap",
+                "laravel",
+                "laravel-imap",
+                "mail",
+                "oauth",
+                "pop3",
+                "webklex"
+            ],
+            "support": {
+                "issues": "https://github.com/Webklex/laravel-imap/issues",
+                "source": "https://github.com/Webklex/laravel-imap/tree/4.1.2"
+            },
+            "funding": [
+                {
+                    "url": "https://www.buymeacoffee.com/webklex",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://ko-fi.com/webklex",
+                    "type": "ko_fi"
+                }
+            ],
+            "install-path": "../webklex/laravel-imap"
+        },
+        {
+            "name": "webklex/php-imap",
+            "version": "4.1.2",
+            "version_normalized": "4.1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Webklex/php-imap.git",
+                "reference": "94bf93ae8868ac1e073cfbaef377f0ca1acac2bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Webklex/php-imap/zipball/94bf93ae8868ac1e073cfbaef377f0ca1acac2bc",
+                "reference": "94bf93ae8868ac1e073cfbaef377f0ca1acac2bc",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "ext-iconv": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "illuminate/pagination": ">=5.0.0",
+                "nesbot/carbon": ">=1.0",
+                "php": ">=7.0.0",
+                "symfony/http-foundation": ">=2.8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "suggest": {
+                "symfony/mime": "Recomended for better extension support"
+            },
+            "time": "2022-12-14T15:45:15+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Webklex\\PHPIMAP\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Malte Goldenbaum",
+                    "email": "github@webklex.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP IMAP client",
+            "homepage": "https://github.com/webklex/php-imap",
+            "keywords": [
+                "imap",
+                "mail",
+                "php-imap",
+                "pop3",
+                "webklex"
+            ],
+            "support": {
+                "issues": "https://github.com/Webklex/php-imap/issues",
+                "source": "https://github.com/Webklex/php-imap/tree/4.1.2"
+            },
+            "funding": [
+                {
+                    "url": "https://www.buymeacoffee.com/webklex",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://ko-fi.com/webklex",
+                    "type": "ko_fi"
+                }
+            ],
+            "install-path": "../webklex/php-imap"
         },
         {
             "name": "webmozart/assert",
