@@ -26,7 +26,7 @@
 						<div class="col s12">
 							<div class="input-field">
 								<label for="medico" class="active">Especialidade</label>
-								<select name="especialidade" id="especialidade" data-url="{{ go('clinica.especialidades.autocomplete') }}" data-placeholder="Informe a especialidade...">
+								<select name="especialidade" class="autocomplete" id="especialidade" data-url="{{ go('clinica.especialidades.autocomplete') }}" data-placeholder="Informe a especialidade...">
 									@if(isset($row) && $row->id_especialidade && $row->especialidade)
 										<option value="{{ $row->id_especialidade }}" selected>{{ $row->especialidade }}</option>
 									@endif
@@ -38,7 +38,7 @@
 						<div class="col s12">
 							<div class="input-field">
 								<label for="clinica" class="active">Local</label>
-								<select name="clinica" id="clinica" data-url="{{ go('clinica.clinicas.autocomplete') }}" data-placeholder="Informe a clínica...">
+								<select name="clinica" class="autocomplete" id="clinica" data-url="{{ go('clinica.clinicas.autocomplete') }}" data-placeholder="Informe a clínica...">
 									@if(isset($row) && $row->id_clinica && $row->clinica)
 										<option value="{{ $row->id_clinica }}" selected>{{ $row->clinica }}</option>
 									@endif
@@ -50,7 +50,7 @@
 						<div class="col s12">
 							<div class="input-field">
 								<label for="medico" class="active">Médico</label>
-								<select name="medico" id="medico" data-url="{{ go('clinica.medicos.autocomplete') }}" data-placeholder="Informe o médico...">
+								<select name="medico" class="autocomplete" id="medico" data-url="{{ go('clinica.medicos.autocomplete') }}" data-placeholder="Informe o médico...">
 									@if(isset($row) && $row->id_medico && $row->medico)
 										<option value="{{ $row->id_medico }}" selected>{{ $row->medico }}</option>
 									@endif
@@ -62,7 +62,7 @@
 						<div class="col s12">
 							<div class="input-field">
 								<label for="tipo" class="active">Tipo de atendimento</label>
-								<select name="tipo" id="tipo" data-url="{{ go('clinica.atendimentos.autocomplete', 'tipos') }}" value="{{ isset($row) && $row->tipo_atendimento ? $row->tipo_atendimento : null; }}" data-placeholder="Informe o tipo de atendimento...">
+								<select name="tipo" class="autocomplete" id="tipo" data-url="{{ go('clinica.atendimentos.autocomplete', 'tipos') }}" value="{{ isset($row) && $row->tipo_atendimento ? $row->tipo_atendimento : null; }}" data-placeholder="Informe o tipo de atendimento...">
 									@if(isset($row) && $row->id_tipo && $row->tipo_atendimento)
 										<option value="{{ $row->id_tipo }}" selected>{{ $row->tipo_atendimento }}</option>
 									@endif
@@ -74,7 +74,7 @@
 						<div class="col s12">
 							<div class="input-field">
 								<label for="categoria" class="active">Classificação</label>
-								<select name="categoria" id="categoria" data-url="{{ go('clinica.atendimentos.autocomplete', 'categorias') }}" data-placeholder="Informe a classificação do atendimento...">
+								<select name="categoria" class="autocomplete" id="categoria" data-url="{{ go('clinica.atendimentos.autocomplete', 'categorias') }}" data-placeholder="Informe a classificação do atendimento...">
 									@if(isset($row) && $row->id_categoria && $row->categoria)
 										<option value="{{ $row->id_categoria }}" selected>{{ $row->categoria }}</option>
 									@endif
@@ -192,7 +192,7 @@
 											<div class="input-field">
 												<label for="nome_paciente" class="grey-text text-accent-1  active">Paciente</label>
 												@if(isset($row) || !isset($paciente))
-													<select name="nome_paciente" id="nome_paciente" data-url="{{ go('clinica.pacientes.autocomplete') }}" data-placeholder="Informe o paciente">
+													<select name="nome_paciente" class="autocomplete" id="nome_paciente" data-url="{{ go('clinica.pacientes.autocomplete') }}" data-placeholder="Informe o paciente">
 														@if(isset($row) && $row->id_paciente && $row->paciente)
 															<option value="{{ $row->id_paciente }}" selected>{{ $row->paciente }}</option>
 														@endif

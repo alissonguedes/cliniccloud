@@ -74,7 +74,7 @@
 	}
 </style>
 
-<div class="container pt-1 scroller" style="height: calc(100vh - 145px); width: 100%;">
+<div class="container pt-1 pb-3 scroller" style="height: calc(100vh - 130px); width: 100%;">
 
 	@if(session('message'))
 		<div class="row">

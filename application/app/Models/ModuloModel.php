@@ -12,10 +12,18 @@ namespace App\Models{
 
 		use HasFactory;
 
+		// protected $connection = 'mysql2';
+
+		public function __construct()
+		{
+			$this->connection = env('DB_CONNECTION_2');
+		}
+
 		public function getModulos($id = null)
 		{
 
-			return $this->from('tb_acl_modulo')
+			return $this->select('*')
+				->from('tb_acl_modulo')
 			// ->where('status', '1')
 				->orderBy('path', 'asc')
 				->get();
@@ -31,71 +39,6 @@ namespace App\Models{
 				->get();
 
 		}
-
-		// public function getRoutes($id = null, $id_parent = null)
-		// {
-
-		// 	$routes = $this->select(
-		// 		'id',
-		// 		'id_controller',
-		// 		'id_parent',
-		// 		'type',
-		// 		'route',
-		// 		DB::raw(
-		// 			'CONCAT(
-		// 				(SELECT namespace FROM tb_acl_modulo WHERE id =
-		// 					(SELECT id_modulo FROM tb_acl_modulo_controller WHERE id = id_controller)
-		// 				),
-		// 				(SELECT controller FROM tb_acl_modulo_controller WHERE id = id_controller)
-		// 			) AS controller'
-		// 		),
-		// 		'action',
-		// 		'name',
-		// 		'filter',
-		// 		'permissao',
-		// 		'restrict'
-		// 	)
-		// 		->from('tb_acl_modulo_routes')
-		// 		->where('id_controller', $id)
-		// 		->where('id_parent', $id_parent)
-		// 		->where('status', '1')
-		// 		->get();
-
-		// 	if ($routes->count() > 0) {
-
-		// 		foreach ($routes as $route) {
-
-		// 			$subroute = $this->from('tb_acl_modulo_routes')
-		// 				->where('id_parent', $route->id)
-		// 				->get();
-
-		// 			if ($subroute->count() === 0) {
-
-		// 				$type_route = $route->type;
-
-		// 				if (!empty($route->name)) {
-		// 					Route::$type_route($route->route, [$route->controller, $route->action])->name($route->name);
-		// 					// echo 'Route::' . $type_route . '("' . $route->route . '", ["' . $route->controller . '", "' . $route->action . '"])->name("' . $route->name . '"); <br>';
-		// 				} else {
-		// 					Route::$type_route($route->route, [$route->controller, $route->action]);
-		// 					// echo 'Route::' . $type_route . '("' . $route->route . '", ["' . $route->controller . '", "' . $route->action . '"]);<br>';
-		// 				}
-
-		// 			} else {
-
-		// 				// echo 'Route::prefix("' . $route->route . '")->group(function ($router) use ($route) {<br>';
-		// 				Route::prefix($route->route)->group(function ($router) use ($route) {
-		// 					$this->getRoutes($route->id_controller, $route->id);
-		// 				});
-		// 				// echo '});<br>';
-
-		// 			}
-
-		// 		}
-
-		// 	}
-
-		// }
 
 		public function getRoutes($id = null, $id_parent = null)
 		{
@@ -133,10 +76,10 @@ namespace App\Models{
 
 			$routes->where('id_controller', function ($query) use ($id) {
 
-				$query->select('id_controller')
-					->from('tb_acl_modulo_controller AS R')
-					->whereColumn('id_controller', 'R.id')
-					->where('id_modulo', $id);
+				$query->select('C.id')
+					->from('tb_acl_modulo_controller AS C')
+					->whereColumn('id_controller', 'C.id')
+					->where('C.id_modulo', $id);
 
 			});
 

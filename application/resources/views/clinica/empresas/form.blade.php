@@ -138,7 +138,7 @@
 																	@endphp
 																	<tr>
 																		<td>
-																			<label for="">
+																			<label>
 																				<input type="checkbox" name="departamento[]" class="filled-in" value="{{ $departamento->id }}" data-status="{{ $departamento->status }}" {{ $checked ?? null }}>
 																				<span></span>
 																			</label>

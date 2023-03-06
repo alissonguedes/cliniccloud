@@ -48,13 +48,16 @@
 								<a href="#"><i class="material-icons-outlined left">mail</i> {{ $paciente->email ?? 'Não informado' }}</a>
 							</p>
 						</div>
+
 						{{-- <p class="center-align">
 							<a href="{{ go('clinica.pacientes.edit', $paciente->id) }}" class="waves-effect waves-light btn gradient-45deg-deep-orange-orange border-round mt-7 z-depth-4">Alterar</a>
 						</p> --}}
-						{? $link = ($paciente->status === '1' && $paciente->obito === '0') ? 'data-link='. go('clinica.pacientes.{id_paciente}.agendamento',$paciente->id) : null; ?}
+
+						{? $link = ($paciente->status === '1' && $paciente->obito === '0') ? 'data-link='. go('clinica.agendamentos.{agendamento}.paciente.{paciente}', ['agendamento' => 'add', 'paciente' => $paciente->id]) : null; ?}
 						{? $targ = ($paciente->status === '1' && $paciente->obito === '0') ? 'data-target=agendamento' : null; ?}
 						{? $classe = ($paciente->status === '1' && $paciente->obito === '0') ? 'form-sidenav-trigger waves-effect' : null; ?}
 						{? $disabled = ($paciente->status === '0' || $paciente->obito === '1') ? 'disabled' : null; ?}
+
 						<div class="acoes flex flex-center mt-5">
 							<button data-href="{{ go('clinica.pacientes.{id_paciente}.prontuarios', $paciente->id) }}" name="id" id="{{ $paciente->id }}" data-target="prontuario" class="waves-effect gradient-45deg-deep-orange-orange center-align icon-background circle white-text z-depth-3 mx-auto border-0 " data-tooltip="Prontuário">
 								<i class="material-icons-outlined">assignment_ind</i>
@@ -66,9 +69,13 @@
 								<i class="material-icons-outlined">edit</i>
 							</button>
 						</div>
+
 					</div>
+
 				</div>
+
 			</div>
+
 		@endforeach
 
 	</div>

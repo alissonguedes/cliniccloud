@@ -2,6 +2,8 @@
 
 use App\Models\ConfigModel;
 use App\Models\MenuModel;
+use App\Models\ModuloModel;
+use Illuminate\Support\Facades\DB;
 
 if (!function_exists('data')) {
 	function data($data, $format = 'd.m.Y H:i:s', $new_format)
@@ -513,204 +515,194 @@ if (!function_exists('site_url')) {
 
 	}
 }
+
 /*
  * Fução para obter os menus da página
  */
 if (!function_exists('getMenus')) {
+
+	/*
+	 * Novo menu
+	 * O menu antigo não separava por grupos
+	 */
 	function getMenus($local, $id, $attributes = [])
 	{
 
-		$id = $id == 0 ? null : $id;
+		$ul = null;
 
-		$menu_model = new MenuModel();
+		$menuModel   = new MenuModel();
+		$moduloModel = new ModuloModel();
+		$modulo      = explode('/', request()->path())[0];
+		$modulo      = '/' . $modulo;
 
-		$modulo = explode('/', request()->path())[0];
-		$idioma = !isset($_COOKIE['idioma']) ? get_config('language') : $_COOKIE['idioma'];
-		$ul     = null;
-
-		// Lista o menu principal da aplicação
-		$menu = $menu_model->from('tb_acl_menu')
-			->where('id_modulo', function ($query) use ($modulo) {
-				$query->select('id')
-					->from('tb_acl_modulo')
-					->where('path', '/' . $modulo);
-			})
-			->where('id', function ($query) use ($local) {
-				$query->select('value')
-					->distinct(true)
-					->from('tb_sys_config')
-					->where('config', $local)
-					->where('value', get_config($local))
-					->whereColumn('id_modulo', 'id_modulo');
-			})
-			->where('status', '1')
+		$idModulo = $moduloModel->select('id')
+			->from('tb_acl_modulo')
+			->where('path', $modulo)
 			->get()
 			->first();
 
-		// lista outros menus que são incluídos na aplicação
-		if (!isset($menu)) {
-			$menu = $menu_model->from('tb_acl_menu')
-				->where('id_modulo', function ($query) use ($modulo) {
-					$query->select('id')
-						->from('tb_acl_modulo')
-						->where('path', '/' . $modulo);
-				})
-				->where('id', function ($query) use ($local) {
-					$query->select('id_menu')
-						->from('tb_acl_menu_descricao')
-						->whereColumn('id_menu', 'id')
-						->where('descricao', $local);
-				})
-				->get()
-				->first();
-			// $ul .= 'Nenhum menu neste módulo';
+		$getMenus = $menuModel->select('Menu.*')
+			->from(DB::raw('tb_acl_menu AS Menu, tb_acl_modulo AS Modulo, tb_acl_modulo_menu AS MMenu'))
+			->whereColumn('MMenu.id_menu', 'Menu.id')
+			->whereColumn('MMenu.id_modulo', 'Modulo.id')
+			->where('Modulo.id', function ($query) use ($modulo) {
+				$query->select('id')
+					->from('tb_acl_modulo')
+					->where('path', $modulo);
+			})
+
+		// ->where('id', function ($query) use ($local) {
+		// 	$query->select('value')
+		// 		->from('tb_sys_config')
+		// 		->where('config', $local)
+		// 		->where('value', get_config($local))
+		// 		->whereColumn('id_modulo', 'id_modulo');
+		// })
+
+			->where('Menu.status', '1')
+			->where('Modulo.status', '1')
+			->where('MMenu.status', '1');
+
+		if ($moduloModel->getIsRestrictModulo($modulo)) {
+
+			if (session()->exists('userdata') && session()->exists('app_session')) {
+				$getMenus = $getMenus->where('Menu.id_grupo', session()->get('userdata')[session()->get('app_session')]['id_grupo']);
+			}
+
 		}
 
-		if (isset($menu)) {
-			$items = $menu_model->from('tb_acl_menu_item')
-				->where('id_menu', $menu->id)
-				->where('id_parent', $id)
-				->orderBy('ordem', 'asc')
-				->where('status', '1')
-			// ->whereIn('id_item', function ($query) use ($menu) {
-			// $query->select('id')
-			// 	->from('tb_acl_modulo_controller AS C')
-			// 	->whereColumn('C.id', 'id_item')
-			// 	->where('C.status', '1')
-			// 	->whereIn('C.id', function ($query) use ($menu) {
-			// 		$query->select('id_controller')
-			// 			->from('tb_acl_modulo_routes AS R')
-			// 			->whereColumn('R.id_controller', 'C.id');
-			// 		// ->where('R.status', '1');
-			// 	})
-			// // $query->select('id_controller')
-			// 	->from('tb_acl_modulo_routes')
-			// 	->whereColumn('id_controller', 'id_item')
-			// 	->where('status', '1')
-			// // ->where('type', 'any')
-			// 	->where('id_parent', '0')
-			// ;
-			// })
-				->get();
+		$getMenus = $getMenus->get();
 
-			if ($items->count() > 0) {
-				$params = null;
-				if (!empty($attributes)) {
-					foreach ($attributes as $ind => $val) {
-						$params .= ' ' . $ind . '="' . $val . '"';
+		if ($getMenus->count() > 0) {
+
+			foreach ($getMenus as $menu) {
+
+				$items = $menuModel->select('Item.*')
+					->from(DB::raw('tb_acl_menu_item AS Item'))
+					->where('id_parent', $id)
+					->whereIn('Item.id', function ($query) use ($menu) {
+						$query->select('id_item')
+							->from('tb_acl_menu_item_menu')
+							->whereColumn('id_item', 'id')
+							->where('status', '1')
+							->where('id_menu', $menu->id);
+					})
+					->orderBy('ordem', 'asc')
+					->orderBy('descricao', 'asc')
+					->get();
+
+				if ($items->count() > 0) {
+
+					$params = null;
+
+					if (!empty($attributes)) {
+						foreach ($attributes as $ind => $val) {
+							$params .= ' ' . $ind . '="' . $val . '"';
+						}
 					}
-				}
 
-				$ul = '<ul' . $params . '>';
+					$ul = '<ul' . $params . '>';
 
-				foreach ($items as $item) {
+					foreach ($items as $item) {
 
-					$label = $menu_model->from('tb_acl_menu_item_descricao')
-						->where('id_item', $item->id)
-						->where('id_idioma', function ($query) {
-							$query->select('id')
-								->from('tb_sys_idioma')
-								->where('sigla', (isset($_COOKIE['idioma']) ? $_COOKIE['idioma'] : get_config('language')))
-								->get()
-								->first();
-						})
-						->get()
-						->first();
+						$submenus = $menuModel->from('tb_acl_menu_item')
+							->where('id_parent', $item->id)
+							->where('status', '1')
+							->get();
 
-					// Se não existir uma tradução válida para o Idioma selecionado, será obtido o Idioma padrão
-					if (!isset($label)) {
-						$label = $menu_model->from('tb_acl_menu_item_descricao')
-							->where('id_item', $item->id)
-							->where('id_idioma', function ($query) {
-								$query->select('id')
-									->from('tb_sys_idioma')
-									->where('sigla', get_config('language'))
-									->get()
-									->first();
+						$route = $menuModel->select('name')
+							->from('tb_acl_modulo_routes')
+							->where('status', '1')
+							->where('type', 'any')
+							->where(function ($query) {
+								$query->where('id_parent')
+									->orWhere('id_parent', '0');
 							})
-							->get()
-							->first();
-					}
+							->where('id_controller', $item->id_controller);
 
-					if (!isset($label)) {
-						$label = (object) ['titulo' => 'no title'];
-					}
+						$id_route = $item->id_route > 0 ? $item->id_route : null;
 
-					$submenus = $menu_model->from('tb_acl_menu_item')
-						->where('id_parent', $item->id)
-						->where('status', '1')
-						->get();
-
-					$route = $menu_model->select('name')
-						->from('tb_acl_modulo_routes')
-						->where('status', '1')
-						->where('type', 'any')
-						->where(function ($query) {
-							$query->where('id_parent')
-								->orWhere('id_parent', '0');
-						})
-						->where('id_controller', $item->id_item);
-
-					$id_route = $item->id_route > 0 ? $item->id_route : null;
-
-					if (!is_null($id_route)) {
-						$route->where('id', $id_route);
-					}
-
-					$route = $route->first();
-
-					if (isset($route)) {
-
-						if ($item->divider) {
-							$ul .= '<li class="divider" style="margin: 10px 0;"></li>';
+						if (!is_null($id_route)) {
+							$route->where('id', $id_route);
 						}
 
-						if ($item->item_type) {
-							$ul .= '<li class="menu-description"><h6 style="padding-left: 25px; color: var(--grey-accent-4); font-size: 10px; line-height: 3; text-transform: uppercase; font-weight: bold;">' . $item->item_type . '</h6></li>';
-						}
+						$route = $route->first();
 
-						$ul .= '<li>';
+						if (isset($route)) {
 
-						$target = 'target="' . $item->target . '"' ?? null;
-						$a      = null;
+							$label = $menuModel->select('descricao AS titulo')
+								->from('tb_acl_menu_item_descricao')
+								->where('id_item', $item->id)
+								->first();
 
-						if ($submenus->count() > 0) {
-							$a = 'class="collapsible-header waves-effect waves-cyan" href="javascript:void(0);" tabindex="0"';
-						} else {
-							if (isset($route)) {
-								$a = 'href="' . route($route->name) . '"';
-							} else {
-								$a = 'href="#"';
+							if (!isset($label)) {
+								$label = (object) ['titulo' => 'no title'];
 							}
+
+							if ($item->divider) {
+								$ul .= '<li class="divider" style="margin: 10px 0;"></li>';
+							}
+
+							if ($item->item_type) {
+								$ul .= '<li class="menu-description"><h6 style="padding-left: 25px; color: var(--grey-accent-4); font-size: 10px; line-height: 3; text-transform: uppercase; font-weight: bold;">' . $item->item_type . '</h6></li>';
+							}
+
+							$target = 'target="' . $item->target . '"' ?? null;
+							$a      = null;
+
+							if ($submenus->count() > 0) {
+
+								$a = 'class="collapsible-header waves-effect waves-cyan" href="javascript:void(0);" tabindex="0"';
+
+							} else {
+
+								if (isset($route)) {
+									$a = 'href="' . route($route->name) . '"';
+								} else {
+									$a = 'href="#"';
+								}
+
+							}
+
+							$ul .= '<li>';
+
+							$ul .= '<a ' . $a . ' ' . $target . '>';
+							$ul .= $item->icon ? (preg_match('[^fa\-]', $item->icon) ? '<span class="fa-icon fa-solid ' . $item->icon . '"></span>' : '<span class="material-symbols-outlined">' . $item->icon . '</span>') : '<span class="material-symbols-outlined">radio_button_unchecked</span>';
+
+							$ul .= '<span class="menu-title">' . $label->titulo . '</span>';
+							$ul .= '</a>';
+
+							if ($submenus->count() > 0) {
+
+								$ul .= '<div class="collapsible-body">';
+
+								$ul .= getMenus($local, $item->id, [
+									'class'            => 'collapsible collapsible-sub',
+									'data-collapsible' => 'accordion',
+								]);
+
+								$ul .= '</div>';
+
+							}
+
+							$ul .= ' </li>';
+
 						}
-
-						$ul .= '<a ' . $a . ' ' . $target . '>';
-						$ul .= $item->icon ? (preg_match('[^fa\-]', $item->icon) ? '<span class="fa-icon fa-solid ' . $item->icon . '"></span>' : '<span class="material-symbols-outlined">' . $item->icon . '</span>') : '<span class="material-symbols-outlined">radio_button_unchecked</span>';
-
-						$ul .= '<span class="menu-title">' . $label->titulo . '</span>';
-						$ul .= '</a>';
-
-						if ($submenus->count() > 0) {
-							$ul .= '<div class="collapsible-body">';
-							$ul .= getMenus($local, $item->id, [
-								'class'            => 'collapsible collapsible-sub',
-								'data-collapsible' => 'accordion',
-							]);
-							$ul .= '</div>';
-						}
-
-						$ul .= '</li>';
 
 					}
+
+					$ul .= '</ul>';
 
 				}
 
-				$ul .= '</ul>';
 			}
+
 		}
 
 		return $ul;
+
 	}
+
 }
 
 if (!function_exists('RecursiveRemove')) {

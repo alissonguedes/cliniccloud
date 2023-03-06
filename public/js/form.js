@@ -26,6 +26,10 @@ var Form = {
 
 			Form.submit($(this));
 
+			progress('out');
+			var btn_submit = form.find(':submit');
+			btn_submit.attr('disabled', false);
+
 		});
 
 	},
@@ -75,7 +79,26 @@ var Form = {
 
 					Form.reload(form, response);
 
+				} else {
+
+					progress('out');
+
+					// var error = errors.responseJSON;
+
+					// console.log(error);
+
+					// Form.clearErrors(form);
+					// Form.showErrors(form, errors, 'error');
+
+					// alert(error.message, error.title, error.status);
+
+					btn_submit.attr('disabled', false);
+
 				}
+
+				progress('out');
+				btn_submit.attr('disabled', false);
+
 
 			},
 			error: (errors) => {

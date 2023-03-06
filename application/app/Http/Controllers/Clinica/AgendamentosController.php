@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Clinica{
 	use App\Models\DepartamentoModel;
 	use App\Models\EstadoCivilModel;
 	use Illuminate\Http\Request;
+	use \App\Models\PacienteModel;
 
 	// use Illuminate\Validation\Rule;
 
@@ -20,6 +21,7 @@ namespace App\Http\Controllers\Clinica{
 			$this->agendamento_model  = new AgendamentoModel();
 			$this->departamento_model = new DepartamentoModel();
 			$this->estadoCivil_model  = new EstadoCivilModel();
+			$this->paciente_model     = new PacienteModel();
 
 		}
 
@@ -36,12 +38,31 @@ namespace App\Http\Controllers\Clinica{
 
 		}
 
-		public function form(Request $request, $id = null, $paciente = null)
+		public function form(Request $request, $agendamento, $paciente = null)
 		{
 
-			$dados['paciente_model'] = new \App\Models\PacienteModel();
-			$dados['row']            = $this->agendamento_model->getAgendamentoById($id);
+			$dados['paciente_model'] = $this->paciente_model;
 			$dados['departamentos']  = $this->departamento_model->getDepartamentos();
+
+			if (!is_null($paciente) && $agendamento == 'add') {
+
+				if ($this->paciente_model->isBlocked($paciente)) {
+
+					$status  = 'warn';
+					$title   = 'Paciente inativo!';
+					$message = 'Não é possível realizar o agendamento.';
+
+					return response()->json(['status' => $status, 'title' => $title, 'message' => $message]);
+
+				}
+
+				$dados['paciente'] = $this->paciente_model->getPacienteById($paciente);
+
+			} else {
+
+				$dados['row'] = $this->agendamento_model->getAgendamentoById($agendamento);
+
+			}
 
 			return response(view('clinica.agendamentos.form', $dados), 200);
 

@@ -196,13 +196,13 @@ var Materialize = {
 
 	select: () => {
 
-		$('select:not([data-url])').each(function() {
+		$('select:not(.autocomplete)').each(function() {
 
 			$(this).formSelect();
 
 		});
 
-		$('select[data-url]').each(function() {
+		$('select[data-url].autocomplete').each(function() {
 			autocomplete($(this));
 		});
 
@@ -232,19 +232,31 @@ var Materialize = {
 	modal: (modal, url) => {
 
 		var form;
-		var $modal = modal ? modal : $('.modal');
+		// var $modal = modal ? modal : $('.modal');
+		var $modal = typeof modal !== 'undefined' ? modal : $('.modal');
 
-		if (!url) {
-			var modal = $modal.modal();
+		console.log(typeof $modal, $modal);
+
+		if (typeof modal !== 'undefined') {
+
+			var modal = $(modal).modal({
+				dismissible: $(modal).data('dismissible')
+			});
+
 			Scroller.constructor(modal.find('.modal-content'));
-			return modal;
-		}
 
-		var modal = $modal.modal({
+		} else {
 
-			onOpenStart: () => {
+			var dismissible = $(this).data('dismissible') || true;
 
-				var load = `<div class="preloader-wrapper small active" style="margin-right: 20px;">
+			console.log($modal.attr('id'), dismissible, $modal.data('dismissible'));
+
+			var modal = $modal.modal({
+
+				dimissible: dismissible,
+				onOpenStart: () => {
+
+					var load = `<div class="preloader-wrapper small active" style="margin-right: 20px;">
 							<div class="spinner-layer spinner-green-only">
 								<div class="circle-clipper left">
 									<div class="circle"></div>
@@ -259,34 +271,34 @@ var Materialize = {
 						</div>
 						Carregando o formulário. Por favor, aguarde!`;
 
-				var texto = $('<div>', {
-					'style': 'display: flex; align-items: center; place-content: center; position: absolute; top: 50%; left: 0; bottom: 50%; right: 0; margin-top: -25px; margin-bottom: -25px; text-align: center;'
-				});
+					var texto = $('<div>', {
+						'style': 'display: flex; align-items: center; place-content: center; position: absolute; top: 50%; left: 0; bottom: 50%; right: 0; margin-top: -25px; margin-bottom: -25px; text-align: center;'
+					});
 
-				// $modal.find('.modal-content').html($(texto).html(load));
-				$modal.find('form').html($(texto).html(load));
+					// $modal.find('.modal-content').html($(texto).html(load));
+					$(this).find('form').html($(texto).html(load));
 
-				var data = {
-					datatype: 'html',
-					'data': {}
-				}
+					var data = {
+						datatype: 'html',
+						'data': {}
+					}
 
-				Http.get(url, data, (response) => {
-					form = $(response).find('form').html();
-					$modal.find('form').html(form);
-				});
+					Http.get(url, data, (response) => {
+						// console.log(response);
+						form = $(response).find('form').html();
+						$modal.find('form').html(form);
+						Materialize.tooltip();
+						Materialize.tabs();
+						Materialize.select();
+						Materialize.modal($modal.find('.modal'));
+						Scroller.constructor($modal.find('.modal-content'));
+					});
 
-			},
+				},
 
-			onOpenEnd: () => {
-				Materialize.tooltip();
-				Materialize.tabs();
-				Materialize.select();
-				Materialize.modal($modal.find('.modal'));
-				Scroller.constructor(modal.find('.modal-content'));
-			}
+			});
 
-		});
+		}
 
 		return modal;
 

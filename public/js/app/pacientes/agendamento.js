@@ -5,7 +5,7 @@ var SidenavForm = (target, action, callback) => {
 	var modal = $('.form-sidenav#' + target);
 
 	var overlay = $('<div/>', {
-		class: 'modal-overlay',
+		class: 'modal-overlay agendamento',
 		style: 'z-index: 996; display: block; opacity: 0.5;'
 	})
 

@@ -22,6 +22,11 @@ class MenuModel extends Model
 		null,
 	];
 
+	public function __construct()
+	{
+		$this->connection = env('DB_CONNECTION_2');
+	}
+
 	public function getMenus($menu = null)
 	{
 
@@ -33,6 +38,8 @@ class MenuModel extends Model
 			'tb_acl_menu.updated_at',
 			'tb_acl_menu.status'
 		);
+
+		// $get->join('tb_acl_modulo_grupo AS G', 'G.id_menu', '=', 'tb_acl_menu.id');
 
 		// $get->join('tb_acl_menu_descricao AS D', 'D.id_menu', '=', 'tb_acl_menu.id');
 		// $get->join('tb_sys_idioma AS I', 'I.id', '=', 'D.id_idioma');

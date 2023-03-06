@@ -294,7 +294,7 @@ var Datatable = {
 						// ao clicar na linha da tabela
 						$(this).on('click', function() {
 							if (!disabled && tr.data('target') && is_modal) {
-								var mod = $('#' + $(this).data('target'));
+								var mod = '#' + $(this).data('target');
 								var url = $(this).data('url');
 								var m = Materialize.modal(mod, url);
 								var m = M.Modal.getInstance(m);

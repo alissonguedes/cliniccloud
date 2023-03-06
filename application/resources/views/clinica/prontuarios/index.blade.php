@@ -1,6 +1,6 @@
 @extends('clinica.body')
 
-@section('prev-url', route('clinica.pacientes.index'))
+@section('prev-url', url()->previous())
 
 @section('title', 'Prontuários')
 

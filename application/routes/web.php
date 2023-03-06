@@ -11,6 +11,7 @@ if ($this->modulos->getModulos()->count() > 0) {
 		'usermodules',
 		'usersession',
 		'checkprivileges',
+		// 'checkpermission',
 	])->group(function () {
 
 		foreach ($this->modulos->getModulos() as $modulo) {

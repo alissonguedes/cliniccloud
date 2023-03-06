@@ -136,7 +136,7 @@ nav .brand-logo,
 /* Cartão Médicus */
 .credit_card {
 	position: relative;
-	overflow: hidden;
+	/* overflow: hidden; */
 	font-family: 'Montserrat';
 	top: -54px;
 	cursor: pointer;
@@ -242,7 +242,7 @@ nav .brand-logo,
 
 .credit_card .content span {
 	font-size: 8px;
-	font-weight: 300;
+	font-weight: 600;
 	line-height: normal;
 	margin: 0;
 	padding: 0;
@@ -255,6 +255,10 @@ nav .brand-logo,
 	margin: 0;
 	padding: 0;
 	line-height: 1;
+	overflow: hidden;
+	max-height: 2em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .credit_card .footer {

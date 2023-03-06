@@ -123,13 +123,16 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="modal-footer">
-			<button type="reset" class="btn modal-close white waves-effect mr-2" data-toggle="Voltar">
+			<button type="reset" class="btn modal-close white waves-effect mr-2" data-tooltip="Voltar">
 				<i class="material-icons-outlined black-text">arrow_back</i>
 			</button>
-			<button type="submit" class="btn green waves-effect" data-toggle="Salvar">
+			<button type="submit" class="btn green waves-effect" data-tooltip="Salvar">
 				<i class="material-icons-outlined">save</i>
 			</button>
 		</div>
+
 	</form>
+
 </div>

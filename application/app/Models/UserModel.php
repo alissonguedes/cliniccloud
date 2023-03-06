@@ -11,6 +11,7 @@ namespace App\Models{
 	{
 
 		// use HasApiTokens, HasFactory, Notifiable;
+		protected $connection = 'mysql2';
 
 		protected $table = 'tb_acl_usuario AS U';
 
@@ -132,7 +133,8 @@ namespace App\Models{
 							$statusCode      = 401;
 							$data['message'] = 'Acesso Proibido';
 							$data['data']    = null;
-							$data['errors']  = ['login' => 'Usuário não tem permissão para abrir este módulo.'];
+							// $data['errors']  = ['login' => 'Usuário não tem permissão para abrir este módulo.'];
+							$data['errors'] = ['login' => 'Usuário inativo ou removido.'];
 
 							Session::forget('userlogin');
 

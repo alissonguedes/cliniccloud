@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PacienteModel extends Model
@@ -24,49 +22,32 @@ class PacienteModel extends Model
 		'status',
 	];
 
+	protected $datamap = [
+		'convenio'     => 'id_convenio',
+		'estado_civil' => 'id_estado_civil',
+		'etnia'        => 'id_etnia',
+		'notas'        => 'observacoes',
+		'data_obito'   => 'datahora_obito'];
+
 	private $path = 'assets/clinica/img/pacientes/';
+
+	public function __construct()
+	{
+
+	}
 
 	public function getPacientes($data = null)
 	{
 
 		$get = $this->select(
-			'id',
-			'nome',
-			'codigo',
-			'imagem',
-			'associado',
-			'matricula',
-			'validade',
-			'id_estado_civil',
-			'id_etnia',
-			'sexo',
-			'data_nascimento',
-			'cpf',
-			'rg',
-			'cns',
-			'mae',
-			'pai',
-			'notas_gerais',
-			'notas_alergias',
-			'notas_clinicas',
-			'logradouro',
-			'numero',
-			'complemento',
-			'cidade',
-			'bairro',
-			'cep',
-			'uf',
-			'pais',
-			'email',
-			'telefone',
-			'celular',
-			'receber_notificacoes',
-			'receber_email',
-			'receber_sms',
-			'obito',
+			'id', 'nome', 'codigo', 'imagem', 'associado', 'id_estado_civil', 'id_etnia',
+			'sexo', 'data_nascimento', 'cpf', 'rg', 'cns', 'mae', 'pai', 'notas_gerais',
+			'notas_alergias', 'notas_clinicas', 'logradouro', 'numero', 'complemento', 'cidade',
+			'bairro', 'cep', 'uf', 'pais', 'email', 'telefone', 'celular', 'receber_notificacoes',
+			'receber_email', 'receber_sms', 'obito', 'status',
+			'matricula', 'id_tipo_convenio AS convenio', 'id_acomodacao AS acomodacao', 'validade',
 			DB::raw('DATE_FORMAT(datahora_obito, "%d/%m/%Y") AS data_obito'),
 			DB::raw('DATE_FORMAT(datahora_obito, "%H:%i") AS hora_obito'),
-			'status',
 			DB::raw('(SELECT descricao FROM tb_etnia WHERE id = id_etnia) AS etnia'),
 			DB::raw('DATE_FORMAT(data_nascimento, "%d/%m/%Y") AS data_nascimento'),
 		);
@@ -94,12 +75,6 @@ class PacienteModel extends Model
 			$get->where('obito', $data['obito']);
 		}
 
-		// if (isset($data['filter']) && isset($data['value'])) {
-
-		// 	$get->where($data['filter'], $data['value']);
-
-		// }
-
 		// Order By
 		if (isset($_GET['order']) && $_GET['order'][0]['column'] != 0) {
 			$get->orderBy($this->order[$_GET['order'][0]['column']], $_GET['order'][0]['dir']);
@@ -122,22 +97,13 @@ class PacienteModel extends Model
 
 	public function isBlocked($id)
 	{
+
 		return $this->getPacientes()
 			->where('id', $id)
 			->where('status', '0')
 			->first() ? true : false;
-	}
 
-	// public function searchPacientes(Request $request)
-	// {
-	//
-	// $query = $request->get('query');
-	//
-	// return $this->getPacientes()
-	// 	->where('nome', 'like', '%' . $query . '%')
-	// 	->paginate(isset($_GET['length']) ? $_GET['length'] : 50);
-	//
-	// }
+	}
 
 	public function getEtnia()
 	{
@@ -147,200 +113,135 @@ class PacienteModel extends Model
 			->get();
 	}
 
-	public function getAcomodacao()
+	public function getConvenios($id = null, $id_paciente = null)
 	{
-		return $this->select('id', 'descricao')
-			->from('tb_acomodacao')
-			->orderBy('descricao')
-			->get();
-	}
 
-	public function uploadImage(Request $image)
-	{
-		$imagem = null;
+		$get = $this->select(
+			'id',
+			'id_convenio', 'id_tipo', 'id_acomodacao',
+			DB::raw('(SELECT nome FROM tb_paciente WHERE id = id_paciente) AS paciente'),
+			DB::raw('(SELECT descricao FROM tb_convenio WHERE id = id_convenio) AS convenio'),
+			DB::raw('(SELECT descricao FROM tb_convenio WHERE id = id_tipo) AS tipo'),
+			DB::raw('(SELECT descricao FROM tb_acomodacao WHERE id = id_acomodacao) AS acomodacao'),
+			'matricula',
+			'validade_mes',
+			'validade_ano'
+		)->from('tb_paciente_convenio');
 
-		if ($image->file('imagem')) {
-			$file     = $image->imagem;
-			$fileName = sha1($file->getClientOriginalName());
-			$fileExt  = $file->getClientOriginalExtension();
-			$imgName  = explode('.', $file->getClientOriginalName());
-			$origName = limpa_string($imgName[count($imgName) - 2], '-') . '.' . $fileExt;
-			$imagem   = limpa_string($fileName) . '.' . $fileExt;
-			$file->storeAs($this->path, $imagem);
-			$imagem = $this->path . $imagem;
+		$get = $get->where('id_paciente', $id_paciente)
+			->where('status', '1');
+
+		if (!is_null($id)) {
+			return $get->where('id', $id)
+				->get()
+				->first();
 		}
 
-		return $imagem;
+		return $get->get();
 
 	}
 
-	public function cadastraPaciente($post)
+	/**
+	 * Método para ordenar as colunas da tabela
+	 * @param $input <array>
+	 */
+	private function sanitize(array $input = array())
 	{
 
-		$associado            = $post->associado === '1' ? 'yes' : 'no';
-		$matricula            = $post->matricula;
-		$validade             = $post->validade ?? null;
-		$id_estado_civil      = $post->estado_civil;
-		$id_etnia             = $post->etnia ?? 1;
-		$nome                 = $post->nome;
-		$imagem               = $this->uploadImage($post);
-		$codigo               = 'P-' . rand(111111, 999999);
-		$sexo                 = $post->sexo;
-		$data_nascimento      = $post->data_nascimento ? convert_to_date($post->data_nascimento, 'Y-m-d') : null;
-		$cpf                  = $post->cpf;
-		$rg                   = $post->rg;
-		$cns                  = $post->cns;
-		$mae                  = $post->mae;
-		$pai                  = $post->pai;
-		$notas_clinicas       = $post->notas_clinicas;
-		$notas_gerais         = $post->notas_gerais;
-		$notas_alergias       = $post->notas_alergias;
-		$logradouro           = $post->logradouro;
-		$complemento          = $post->complemento;
-		$numero               = $post->numero;
-		$cidade               = $post->cidade;
-		$bairro               = $post->bairro;
-		$cep                  = $post->cep;
-		$uf                   = $post->uf;
-		$pais                 = $post->pais;
-		$email                = $post->email;
-		$telefone             = $post->telefone;
-		$celular              = $post->celular;
-		$receber_notificacoes = $post->receber_notificacoes ?? 'off';
-		$receber_email        = $post->receber_email ?? 'off';
-		$receber_sms          = $post->receber_sms ?? 'off';
-		$datahora_obito       = $post->data_obito && $post->hora_obito ? convert_to_date($post->data_obito . ' ' . $post->hora_obito, 'Y-m-d H:i') : null;
-		$obito                = ($datahora_obito || $post->obito) ? '1' : '0';
-		$status               = ($obito == '0' && $post->status) ? '1' : '0';
+		$input['validade'] = null;
 
-		$data = [
-			'associado'            => $associado,
-			'matricula'            => $matricula,
-			'validade'             => $validade,
-			'id_estado_civil'      => $id_estado_civil,
-			'id_etnia'             => $id_etnia,
-			'codigo'               => $codigo,
-			'nome'                 => $nome,
-			'imagem'               => $imagem,
-			'sexo'                 => $sexo,
-			'data_nascimento'      => $data_nascimento,
-			'cpf'                  => $cpf,
-			'rg'                   => $rg,
-			'cns'                  => $cns,
-			'mae'                  => $mae,
-			'pai'                  => $pai,
-			'notas_clinicas'       => $notas_clinicas,
-			'notas_gerais'         => $notas_gerais,
-			'notas_alergias'       => $notas_alergias,
-			'logradouro'           => $logradouro,
-			'numero'               => $numero,
-			'complemento'          => $complemento,
-			'cidade'               => $cidade,
-			'bairro'               => $bairro,
-			'cep'                  => $cep,
-			'uf'                   => $uf,
-			'pais'                 => $pais,
-			'email'                => $email,
-			'telefone'             => $telefone,
-			'celular'              => $celular,
-			'receber_notificacoes' => $receber_notificacoes,
-			'receber_email'        => $receber_email,
-			'receber_sms'          => $receber_sms,
-			'obito'                => $obito,
-			'datahora_obito'       => $datahora_obito,
-			'status'               => $status,
-		];
+		if (!isset($input['status'])) {
+			$input['status'] = '0';
+		}
 
-		$id = $this->from('tb_paciente')
-			->insertGetId($data);
+		if (!isset($input['obito'])) {
+			$input['obito']          = '0';
+			$input['datahora_obito'] = null;
+		} else {
+			$data_obito              = $input['data_obito'];
+			$hora_obito              = $input['hora_obito'];
+			$data_obito              = str_replace('/', '-', $data_obito);
+			$input['datahora_obito'] = date('Y-m-d', strtotime($data_obito)) . ' ' . $hora_obito;
+			unset($input['data_obito']);
+			unset($input['hora_obito']);
+		}
+
+		if (!isset($input['associado'])) {
+			$input['associado'] = 'no';
+		} else {
+
+			if ($input['associado'] === 'yes') {
+
+				$validade          = $input['validade_ano'] . '-' . $input['validade_mes'];
+				$input['validade'] = $validade;
+
+			}
+
+		}
+
+		unset($input['validade_mes']);
+		unset($input['validade_ano']);
+
+		if (request()->method() == 'PUT') {
+			unset($input['matricula']);
+			unset($input['codigo']);
+		}
+
+		return $this->fields($input);
+
+	}
+
+	public function create(array $input = array())
+	{
+
+		$input = $this->sanitize($input);
+
+		return $this->insertGetId($input);
+
+	}
+
+	public function edit(array $input = array())
+	{
+
+		$id = $input['id'];
+
+		$input = $this->sanitize($input);
+
+		if (isset($input['convenios'])) {
+			$convenios = $input['convenios'];
+			unset($input['convenios']);
+		}
+
+		$this->where('id', $id)
+			->update($input);
+
+		if (isset($convenios)) {
+
+			foreach ($convenios as $convenio) {
+
+				$c                = json_decode($convenio, true);
+				$c['id_paciente'] = $id;
+
+				$issetConvenio = $this->from('tb_paciente_convenio')
+					->where('id_paciente', $id)
+					->where('id_convenio', $c['id_convenio'])
+					->first();
+
+				if (!isset($issetConvenio)) {
+					$this->from('tb_paciente_convenio')
+						->insert($c);
+				}
+
+			}
+
+		}
 
 		return $id;
 
 	}
 
-	public function editaPaciente(Request $post, $id)
+	public function remove()
 	{
-
-		$associado            = $post->associado === '1' ? 'yes' : 'no';
-		$matricula            = $post->matricula;
-		$validade             = $post->validade ?? null;
-		$id_estado_civil      = $post->estado_civil;
-		$id_etnia             = $post->etnia ?? 1;
-		$nome                 = $post->nome;
-		$imagem               = $this->uploadImage($post);
-		$sexo                 = $post->sexo;
-		$data_nascimento      = $post->data_nascimento ? convert_to_date($post->data_nascimento, 'Y-m-d') : null;
-		$cpf                  = $post->cpf;
-		$rg                   = $post->rg;
-		$cns                  = $post->cns;
-		$mae                  = $post->mae;
-		$pai                  = $post->pai;
-		$notas_clinicas       = $post->notas_clinicas;
-		$notas_gerais         = $post->notas_gerais;
-		$notas_alergias       = $post->notas_alergias;
-		$logradouro           = $post->logradouro;
-		$complemento          = $post->complemento;
-		$numero               = $post->numero;
-		$cidade               = $post->cidade;
-		$bairro               = $post->bairro;
-		$cep                  = $post->cep;
-		$uf                   = $post->uf;
-		$pais                 = $post->pais;
-		$email                = $post->email;
-		$telefone             = $post->telefone;
-		$celular              = $post->celular;
-		$receber_notificacoes = $post->receber_notificacoes ?? 'off';
-		$receber_email        = $post->receber_email ?? 'off';
-		$receber_sms          = $post->receber_sms ?? 'off';
-		$datahora_obito       = $post->data_obito && $post->hora_obito ? convert_to_date($post->data_obito . ' ' . $post->hora_obito, 'Y-m-d H:i') : null;
-		$obito                = ($datahora_obito || $post->obito) ? '1' : '0';
-		$status               = ($obito == '0' && $post->status) ? '1' : '0';
-
-		$data = [
-			'associado'            => $associado,
-			'matricula'            => $matricula,
-			'validade'             => $validade,
-			'id_estado_civil'      => $id_estado_civil,
-			'id_etnia'             => $id_etnia,
-			'nome'                 => $nome,
-			'sexo'                 => $sexo,
-			'data_nascimento'      => $data_nascimento,
-			'cpf'                  => $cpf,
-			'rg'                   => $rg,
-			'cns'                  => $cns,
-			'mae'                  => $mae,
-			'pai'                  => $pai,
-			'notas_clinicas'       => $notas_clinicas,
-			'notas_gerais'         => $notas_gerais,
-			'notas_alergias'       => $notas_alergias,
-			'logradouro'           => $logradouro,
-			'numero'               => $numero,
-			'complemento'          => $complemento,
-			'cidade'               => $cidade,
-			'bairro'               => $bairro,
-			'cep'                  => $cep,
-			'uf'                   => $uf,
-			'pais'                 => $pais,
-			'email'                => $email,
-			'telefone'             => $telefone,
-			'celular'              => $celular,
-			'receber_notificacoes' => $receber_notificacoes,
-			'receber_email'        => $receber_email,
-			'receber_sms'          => $receber_sms,
-			'obito'                => $obito,
-			'datahora_obito'       => $datahora_obito,
-			'status'               => $status,
-		];
-
-		if (!is_null($imagem)) {
-			$data['imagem'] = $imagem;
-		}
-
-		$id = $this->from('tb_paciente')
-			->where('id', $id)
-			->update($data);
-
-		return $id;
 
 	}
 

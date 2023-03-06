@@ -3,11 +3,7 @@
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
-$dir_path = explode('index.php', $_SERVER['SCRIPT_FILENAME']);
-
-array_pop($dir_path);
-
-$__DIR = getcwd() . '/..'; //dirname($dir_path[0]);
+$__DIR = getcwd() . '/..';
 
 define('BASEDIR', $__DIR . '/application/');
 define('LARAVEL_START', microtime(true));

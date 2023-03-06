@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Clinica{
 
 	use App\Models\ConvenioModel;
 	use App\Models\EstadoCivilModel;
-	use App\Models\PacienteModel;
+	use App\Models\HomecareModel;
 	use Illuminate\Http\Request;
 	use Illuminate\Validation\Rule;
 
@@ -15,7 +15,7 @@ namespace App\Http\Controllers\Clinica{
 		{
 
 			$this->convenio_model    = new ConvenioModel();
-			$this->paciente_model    = new PacienteModel();
+			$this->paciente_model    = new HomecareModel();
 			$this->estadoCivil_model = new EstadoCivilModel();
 
 		}

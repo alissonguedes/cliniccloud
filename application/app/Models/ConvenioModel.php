@@ -43,11 +43,49 @@ namespace App\Models{
 
 		public $timestamps = false;
 
-		public function getConvenio()
+		public function getConvenio($id = null)
 		{
 
-			return $this->select('*')
-				->get();
+			$get = $this->select('*');
+
+			if (!is_null($id)) {
+				$get = $get->where('id', $id);
+			}
+
+			$get = $get->whereNull('id_parent');
+
+			return $get->get();
+
+		}
+
+		public function getTipoConvenio($id_tipo = null, $id_parent = null)
+		{
+			$get = $this->select('*');
+
+			if (!is_null($id_parent)) {
+				$get = $get->where('id_parent', $id_parent);
+			} else {
+				$get = $get->whereNotNull('id_parent');
+			}
+
+			if (!is_null($id_tipo)) {
+				$get = $get->where('id', $id_tipo);
+			}
+
+			return $get->get();
+		}
+
+		public function getAcomodacao($id = null)
+		{
+
+			$get = $this->select('*')
+				->from('tb_acomodacao');
+
+			if (!is_null($id)) {
+				$get = $get->where('id', $id);
+			}
+
+			return $get->get();
 
 		}
 

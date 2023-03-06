@@ -112,7 +112,7 @@
 }
 
 .card-body.fixed-height {
-	height: calc(100vh - 296px);
+	height: calc(100vh - 340px);
 }
 
 .card-body.responsive-table {
@@ -404,8 +404,27 @@
 	width: 100%;
 } */
 
+.modal {
+	position: fixed;
+	z-index: 9999 !important;
+}
+
+.modal-overlay:not(.agendamento) {
+	z-index: 9998 !important;
+}
+
+.modal:not(.modal-fixed-footer) .modal-content {
+	position: relative !important;
+}
+
 .main-full .modal.offset-l2 {
 	left: 20%;
+}
+
+.datepicker-modal,
+.timepicker-modal {
+	max-width: 660px;
+	width: 660px;
 }
 
 /* Modal Form Left */
@@ -414,8 +433,8 @@
 	bottom: 0;
 	background: #fff !important;
 	z-index: 10;
-	transform: translateX(-110%);
-	transition: 250ms;
+	transform: translateX(-140%);
+	transition: 200ms;
 	width: inherit;
 	height: inherit;
 	left: 0;
@@ -424,12 +443,12 @@
 	overflow-x: hidden;
 	height: calc(100vh - 64px);
 	z-index: 997;
+	/* animation-delay: 5000ms; */
 }
 
 
 .form-sidenav.open {
 	transform: translateX(0%);
-	animation-delay: 2000ms;
 }
 
 .form-sidenav.card {

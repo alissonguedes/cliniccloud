@@ -19,7 +19,7 @@
 <script src="{{ asset('assets/plugins/quill/js/quill.js') }}"></script>
 <script src="{{ asset('assets/plugins/quill/js/quill.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/html2canvas/html2canvas.min.js') }}"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.0/jQuery.print.js"></script>
+<script src="{{ asset('assets/plugins/jquery/jquery.print.js') }}"></script>
 
 <script src="{{ asset('assets/plugins/requirejs/require.js') }}"></script>
 

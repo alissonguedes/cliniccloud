@@ -14,7 +14,8 @@ class UsuarioModel extends Authenticatable
 {
 	use HasFactory, Notifiable;
 
-	protected $table = 'tb_acl_usuario';
+	protected $connection = 'mysql2';
+	protected $table      = 'tb_acl_usuario';
 
 	/**
 	 * The attributes that are mass assignable.

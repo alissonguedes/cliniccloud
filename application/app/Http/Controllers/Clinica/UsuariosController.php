@@ -77,8 +77,8 @@ class UsuariosController extends Controller
 		$request->validate([
 			'nome'  => ['required', 'max:255'],
 			'grupo' => ['required'],
-			'login' => ['required', 'unique:tb_acl_usuario,login'],
-			'email' => ['required', 'unique:tb_acl_usuario,email'],
+			'login' => ['required', 'unique:mysql2.tb_acl_usuario,login'],
+			'email' => ['required', 'unique:mysql2.tb_acl_usuario,email'],
 		]);
 
 		$url  = route('clinica.usuarios.index');
@@ -86,7 +86,7 @@ class UsuariosController extends Controller
 
 		if ($this->usuario_model->create($request)) {
 			$status  = 'success';
-			$message = 'Idioma cadastrado com sucesso!';
+			$message = 'Usuário cadastrado com sucesso!';
 		} else {
 			$status  = 'error';
 			$message = 'Não foi possível cadastrar o idioma. Por favor, tente novamente.';
@@ -112,11 +112,11 @@ class UsuariosController extends Controller
 			'grupo' => ['required'],
 			'login' => [
 				'required',
-				Rule::unique('tb_acl_usuario', 'login')->ignore($_POST['id'], 'id'),
+				Rule::unique('mysql2.tb_acl_usuario', 'login')->ignore($_POST['id'], 'id'),
 			],
 			'email' => [
 				'required',
-				Rule::unique('tb_acl_usuario', 'email')->ignore($_POST['id'], 'id'),
+				Rule::unique('mysql2.tb_acl_usuario', 'email')->ignore($_POST['id'], 'id'),
 			],
 		]);
 
